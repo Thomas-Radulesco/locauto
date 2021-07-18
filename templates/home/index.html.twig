@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LocAuto{% endblock %}
+
+{% block body %}
+
+<div class="container wrapper">
+    <header>
+        <div class="header-text">
+            <h1>Bienvenue à bord</h1>
+            <p class="site-layus">Location de voiture 24h/24 et 7j/7</p>
+        </div>
+    </header>
+    {% if vehicles %}
+        {% if vehicles|length > 1 %}
+            <p>{{vehicles|length ~ ' résultats'}}</p>
+        {% else %}
+            <p>{{vehicles|length ~ ' résultat'}}</p>
+        {% endif %}
+    {% else %}
+        <p>Aucun résultat</p>
+    {% endif %}
+
+    {% if vehicles %}
+        <ul class="vehicles-list">
+        {% for vehicle in vehicles %}
+
+            <li class="vehicles-list-item">
+                <div class="vehicle-item">
+                    <div class="vehicle-item-picture">
+                        <img src="{{ vehicle.picture }}?random={{ vehicle.id }}" style="width:150px;height:150px"/>
+                    </div>
+                    <div class="vehicle-item-details">
+                        <h2 class="vehicle-item-details-title">{{ vehicle.title }}</h2>
+                        <p class="vehicle-item-details-description">{{ vehicle.description }}</p>
+                        <p class="vehicle-item-details-price">{{ vehicle.dailyPrice }}&euro;</p>
+                    </div>
+                </div>
+            </li>
+            
+        
+        {% endfor %}
+
+        </ul>
+
+    {% endif %}
+
+        
+</div>
+{% endblock %}

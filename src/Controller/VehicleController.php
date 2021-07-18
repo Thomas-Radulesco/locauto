@@ -17,12 +17,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class VehicleController extends AbstractController
 {
     /**
-     * @Route("/", name="vehicle_index", methods={"GET"})
+     * @Route("/", name="vehicle_index", methods={"GET","POST"})
      */
-    public function index(VehicleRepository $vehicleRepository): Response
+    public function index(VehicleRepository $vehicleRepository, Request $request): Response
     {
+        $vehicle = new Vehicle();
+        $form = $this->createForm(VehicleType::class, $vehicle);
+        $formView = $form->createView();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($vehicle);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('vehicle_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->render('vehicle/index.html.twig', [
             'vehicles' => $vehicleRepository->findAll(),
+            'vehicle' => $vehicle,
+            'form' => $formView,
         ]);
     }
 
@@ -81,15 +96,15 @@ class VehicleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="vehicle_delete", methods={"POST"})
+     * @Route("/{id}/delete", name="vehicle_delete", methods={"GET","POST"})
      */
     public function delete(Request $request, Vehicle $vehicle): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $request->request->get('_token'))) {
+        // if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($vehicle);
             $entityManager->flush();
-        }
+        // }
 
         return $this->redirectToRoute('vehicle_index', [], Response::HTTP_SEE_OTHER);
     }
