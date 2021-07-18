@@ -3,6 +3,7 @@
 {% block title %}Vehicle{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Vehicle</h1>
 
     <table class="table">
@@ -46,9 +47,10 @@
         </tbody>
     </table>
 
-    <a href="{{ path('vehicle_index') }}">back to list</a>
+    <a href="{{ path('vehicle_index') }}" class=""><i class="fas fa-undo-alt"></i></a>
 
-    <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}">edit</a>
+    <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}" class="btn-edit"><i class="fas fa-edit"></i></a>
 
     {{ include('vehicle/_delete_form.html.twig') }}
+</div>
 {% endblock %}
