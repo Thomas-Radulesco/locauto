@@ -3,6 +3,7 @@
 @import "~bootswatch/dist/lux/bootswatch";
 @import './vars';
 @import "./home.scss";
+@import "./vehicle.scss";
 
 .btn {
     &-new {
@@ -16,5 +17,12 @@
     }
     &-delete {
         color: $danger;
+        display: inline;
+        cursor: pointer;
+
+        &:hover {
+            color: var(--bs-primary);
+        }
     }
+
 }
