@@ -32,15 +32,13 @@
                 <td>
                     <a href="{{ path('vehicle_show', {'id': vehicle.id}) }}" title="detail" class="btn-detail"><i class="fas fa-search"></i></a>
                     <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}" title="edit" class="btn-edit"><i class="fas fa-edit"></i></a>
-                    <a href="{{ path('vehicle_delete', {'id': vehicle.id}) }}" title="delete" class="btn-delete"><i class="fas fa-trash-alt"></i></a>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
+                    <div class="btn-delete" title="delete">
+                        <i class="fas fa-trash-alt dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ path('vehicle_delete', {'id': vehicle.id}) }}">Oui, je veux supprimer</a>
                             <a class="dropdown-item" href="#">Oups !</a>
                         </div>
+                        </i>
                     </div>
                 </td>
             </tr>
