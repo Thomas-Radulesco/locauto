@@ -1,0 +1,55 @@
+{% extends 'admin/admin_index.html.twig' %}
+
+{% block title %}{{parent() }} - Clients{% endblock %}
+
+{% block body %}
+
+    <div class="admin-wrapper flex-direction-column p-4">
+    <h1>Gestion des véhicules</h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Réf</th>
+                <th scope="col">Nom complet</th>
+                <th scope="col">Marque</th>
+                <th scope="col">Modèle</th>
+                <th scope="col" style="max-width: 500px;">Description</th>
+                <th scope="col">Photo</th>
+                <th scope="col">Prix journalier</th>
+                <th scope="col" style="min-width: 170px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vehicle in vehicles %}
+            <tr>
+                <th scope="row">{{ vehicle.id }}</td>
+                <td>{{ vehicle.title }}</td>
+                <td>{{ vehicle.brand }}</td>
+                <td>{{ vehicle.model }}</td>
+                <td>{{ vehicle.description }}</td>
+                <td><img src="/uploads/cars/pictures/{{ vehicle.picture }}" style="width:200px"/></td>
+                <td>{{ vehicle.dailyPrice }}&euro;</td>
+                <td>
+                    <a href="{{ path('admin_vehicle_show', {'id': vehicle.id}) }}" title="détails" class="btn btn-info btn-detail"><i class="fas fa-search"></i></a>
+                    <a href="{{ path('admin_vehicle_edit', {'id': vehicle.id}) }}" title="modifier" class="btn btn-warning btn-edit"><i class="fas fa-edit"></i></a>
+                    <div class="btn-group" title="supprimer">
+                        <button type="button" class="btn btn-danger dropdown-toggle btn-delete" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-trash-alt me-2"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('admin_vehicle_delete', {'id': vehicle.id, 'token': csrf_token('delete' ~ vehicle.id) }) }}" title="confirmer suppression">Oui, je veux supprimer</a></li>
+                            <li><a class="dropdown-item" href="#" title="annuler suppression">Oups !</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

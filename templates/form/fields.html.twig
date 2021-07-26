@@ -1,0 +1,9 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block file_widget %}
+    {{ block('form_widget') }}
+    <div class="vehicle-picture-preview">Aucune photo sélectionnée</div>
+    {% if image_url is not null %}
+        <img src="{{ asset(image_url) }}" style="width: 300px" class="previous-vehicle-picture mt-4"/>
+    {% endif %}
+{% endblock %}

@@ -4,25 +4,53 @@
 @import './vars';
 @import "./home.scss";
 @import "./vehicle.scss";
+@import "./admin.scss";
 
 .btn {
     &-new {
         color: $success;
+        font-size: 1.2rem;
+        padding: 0.8rem 1rem;
     }
     &-detail {
-        color: $blue;
+        font-size: 1.2rem;
+        padding: 0.4rem 0.5rem 0.3rem 0.5rem;
     }
     &-edit {
-        color: $warning;
+        font-size: 1.2rem;
+        padding: 0.4rem 0.5rem 0.3rem 0.5rem;
     }
     &-delete {
-        color: $danger;
         display: inline;
         cursor: pointer;
-
-        &:hover {
-            color: var(--bs-primary);
-        }
+        font-size: 1.2rem;
+        padding: 0.4rem 0.5rem 0.3rem 0.5rem;
     }
 
+}
+
+.navbar-nav {
+    width: -webkit-fill-available;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+nav.navbar {
+    background-color: black;
+    position: relative;
+    width: 100%;
+    z-index: 10;
+}
+
+.app-flashes {
+    position: fixed;
+    top: 135px;
+    right: 10px;
+    width: 220px;
+    z-index: 1;
+    text-align: center;
+}
+
+ul.dropdown-menu.show {
+    width: fit-content;
 }

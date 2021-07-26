@@ -1,0 +1,35 @@
+<div class="sidebar-wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Menu administration</h3>
+        </div>
+        <ul class="list-unstyled components">
+            {% if '/admin/vehicles' in app.request.pathinfo %}
+                <li class="active">
+            {% else %}
+                <li>
+            {% endif %}
+                <a href="{{path('admin_vehicle_index')}}">Gestion véhicules</a>
+            </li>
+            {% if '/admin/members' in app.request.pathinfo %}
+                <li class="active">
+            {% else %}
+                <li>
+            {% endif %}
+                <a href="{{path('admin_member_index')}}">Gestion clients</a>
+            </li>
+            {% if '/admin/orders' in app.request.pathinfo %}
+                <li class="active">
+            {% else %}
+                <li>
+            {% endif %}
+                <a href="{{path('admin_order_index')}}">Gestion commandes</a>
+            </li>
+        </ul>
+{% if app.request.pathinfo == '/admin/vehicles/' %}
+    {{ include('vehicle/_form.html.twig') }}
+{% endif %}
+    </nav>
+
+</div>

@@ -7,11 +7,14 @@ use App\Repository\MemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=MemberRepository::class)
+ * @UniqueEntity(fields={"login"}, message="There is already an account with this login")
  */
-class Member
+class Member implements UserInterface
 {
     /**
      * @ORM\Id
@@ -21,7 +24,7 @@ class Member
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, unique=true)
      */
     private $login;
 
@@ -41,7 +44,7 @@ class Member
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      */
     private $emailAddress;
 
@@ -222,5 +225,25 @@ class Member
         }
 
         return $this;
+    }
+
+    public function getUserIdentifier()
+    {
+        return $this->login;
+    }
+
+    public function getSalt()
+    {
+        
+    }
+
+    public function eraseCredentials()
+    {
+        
+    }
+
+    public function getUsername()
+    {
+        return $this->firstName.' '.$this->lastName;
     }
 }

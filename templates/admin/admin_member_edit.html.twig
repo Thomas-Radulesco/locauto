@@ -1,0 +1,60 @@
+{% extends 'admin/admin_index.html.twig' %}
+
+{% block title %}{{parent()}} - Edition utilisateur{% endblock %}
+
+{% block body %}
+
+    <div class="admin-wrapper flex-direction-column p-4">
+        <h1>Édition utilisateur</h1>
+        <table class="table">
+        <tbody>
+            <tr>
+                <th>Réf</th>
+                <td>{{ member.id }}</td>
+            </tr>
+            <tr>
+                <th>Login</th>
+                <td>{{ member.login }}</td>
+            </tr>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ member.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ member.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Adresse mail</th>
+                <td>{{ member.emailAddress }}</td>
+            </tr>
+            <tr>
+                <th>Femme / Homme</th>
+                <td>{{ member.gender }}</td>
+            </tr>
+            <tr>
+                <th>Inscrit le</th>
+                <td>{{ member.createdAt ? member.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Mis à jour le</th>
+                <td>{{ member.updatedAt ? member.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Rôles</th>
+                <td>{{ include('member/_form.html.twig', {'button_label': 'Mettre à jour'}) }} </td>
+            </tr>
+        </tbody>
+    </table>
+        <a href="{{ path('admin_member_index') }}" class="btn btn-primary" title="retour à la liste"><i class="fas fa-arrow-left me-2"></i>Retour</a>
+        <div class="btn-group" title="supprimer">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-trash-alt me-2"></i>Supprimer
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ path('admin_member_delete', {'id': member.id, 'token': csrf_token('delete' ~ member.id) }) }}" title="confirmer suppression">Oui, je veux supprimer</a></li>
+                <li><a class="dropdown-item" href="#" title="annuler suppression">Oups !</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

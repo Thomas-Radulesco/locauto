@@ -1,0 +1,57 @@
+@import './vars';
+
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.sidebar-wrapper {
+    display: flex;
+    align-items: stretch;
+    // position: relative;
+    top: 121px;
+    min-height: calc(100vh - 121px);
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 300px;
+    background: lighten(gray, 40);
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+    text-decoration: none;
+}
+
+#sidebar ul li a:hover {
+    color: #fff;
+    background: var(--bs-gray-dark);
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: #fff;
+    background: var(--bs-primary);
+}
+
+.admin-wrapper {
+    // position: relative;
+    top: 121px;
+    width: calc(100vw - 340px);
+
+}
+
+#vehicle_pictureFile:focus {
+    box-shadow: none;
+}

@@ -1,4 +1,6 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="text-start my-4">
+        <button class="btn btn-success"><i class="fas fa-save me-2"></i>{{ button_label|default('Ajouter client') }}</button>
+    </div>
 {{ form_end(form) }}

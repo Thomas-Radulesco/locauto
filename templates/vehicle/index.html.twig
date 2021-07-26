@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vehicle index{% endblock %}
+{% block title %}LocAuto - Véhicules{% endblock %}
 
 {% block body %}
 <div class="container">
@@ -27,18 +27,17 @@
                 <td>{{ vehicle.brand }}</td>
                 <td>{{ vehicle.model }}</td>
                 <td>{{ vehicle.description }}</td>
-                <td><img src="{{ vehicle.picture }}?random={{vehicle.id}}" style="width:200px;height:200px"/></td>
+                <td><img src="/uploads/cars/pictures/{{ vehicle.picture }}" style="width:200px"/></td>
                 <td>{{ vehicle.dailyPrice }}&euro;</td>
                 <td>
                     <a href="{{ path('vehicle_show', {'id': vehicle.id}) }}" title="detail" class="btn-detail"><i class="fas fa-search"></i></a>
                     <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}" title="edit" class="btn-edit"><i class="fas fa-edit"></i></a>
-                    <div class="btn-delete" title="delete">
-                        <i class="fas fa-trash-alt dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="btn-group btn-delete" title="delete">
+                        <i class="fas fa-trash-alt dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ path('vehicle_delete', {'id': vehicle.id}) }}">Oui, je veux supprimer</a>
                             <a class="dropdown-item" href="#">Oups !</a>
                         </div>
-                        </i>
                     </div>
                 </td>
             </tr>

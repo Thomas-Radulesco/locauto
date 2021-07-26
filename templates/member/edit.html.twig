@@ -1,13 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Member{% endblock %}
+{% block title %}{{parent()}} - Edition client{% endblock %}
 
 {% block body %}
-    <h1>Edit Member</h1>
 
-    {{ include('member/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('member_index') }}">back to list</a>
-
-    {{ include('member/_delete_form.html.twig') }}
+    <div class="container mt-4 col-md-6">
+        <h1>Edition client</h1>
+        <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ member.id }}</td>
+            </tr>
+            <tr>
+                <th>Pseudo</th>
+                <td>{{ member.login }}</td>
+            </tr>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ member.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ member.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Adresse mail</th>
+                <td>{{ member.emailAddress }}</td>
+            </tr>
+            <tr>
+                <th>Femme / Homme</th>
+                <td>{{ member.gender }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>        
+                {# <td>{{ member.roles ? member.roles|json_encode : '' }} </td> #}
+                <td>{{ include('member/_form.html.twig', {'button_label': 'Update'}) }} </td>
+            </tr>
+            <tr>
+                <th>Inscrit le</th>
+                <td>{{ member.createdAt ? member.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Mis à jour le</th>
+                <td>{{ member.updatedAt ? member.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+        <a href="{{ path('member_index') }}">back to list</a>
+        {{ include('member/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

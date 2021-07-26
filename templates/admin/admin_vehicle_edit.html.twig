@@ -1,0 +1,24 @@
+{% extends 'admin/admin_index.html.twig' %}
+
+{% block title %}{{parent() }} - Édition véhicule{% endblock %}
+
+{% block body %}
+
+    <div class="admin-wrapper flex-direction-column p-4">
+        <h1>Édition véhicule</h1>
+
+        {{ include('vehicle/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+        <a href="{{ path('admin_vehicle_index') }}" class="btn btn-primary" title="retour à la liste"><i class="fas fa-arrow-left me-2"></i>Retour</a>
+
+        <div class="btn-group" title="supprimer">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-trash-alt me-2"></i>Supprimer
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ path('admin_vehicle_delete', {'id': vehicle.id, 'token': csrf_token('delete' ~ vehicle.id) }) }}" title="confirmer suppression">Oui, je veux supprimer</a></li>
+                <li><a class="dropdown-item" href="#" title="annuler suppression">Oups !</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
