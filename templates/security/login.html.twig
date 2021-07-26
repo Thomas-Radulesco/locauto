@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Log in{% endblock %}
+
+{% block body %}
+<div class="container mt-4 col-md-6">
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+
+        <div class="text-center">
+            <h1>Please sign in</h1>
+        </div>
+        <div class="form-group">
+            <label for="inputLogin" class="form-label mt-4">Login</label>
+            <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" autocomplete="username" required autofocus>
+        </div>
+        <div class="form-group mb-4">
+            <label for="inputPassword" class="form-label mt-4">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+        </div>
+
+        <input type="hidden" name="_csrf_token"
+            value="{{ csrf_token('authenticate') }}"
+        >
+
+        {#
+            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+            See https://symfony.com/doc/current/security/remember_me.html
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" name="_remember_me"> Remember me
+                </label>
+            </div>
+        #}
+
+        <div class="text-center d-flex flex-column">
+            <button class="btn btn-primary" type="submit">
+                Sign in
+            </button>
+            <a href="{{ path('app_forgot_password_request') }}" class="mt-4">Mot de passe oublié</a>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

@@ -16,31 +16,26 @@ class MemberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('login')
-            ->add('password')
-            ->add('lastName')
-            ->add('firstName')
-            ->add('emailAddress', EmailType::class, [
-                'constraints' => [
-                    new Email,
-                    new NotBlank,
-                ],
-            ])
-            ->add('gender', ChoiceType::class, [
-                'choices' => [
-                    'Femme' => 'Femme',
-                    'Homme' => 'Homme',
-                    'Non spécifié' => 'Non spécifié'
-                ]
-            ])
             ->add('roles', ChoiceType::class, [
+                'attr' => ['class' => 'align-items-center'],
+                'label_attr' => [
+                    'class' => 'd-none',
+                ],
                 'choices' => [
-                    'Utilisateur' => 'ROLE_USER',
                     'Administrateur' => 'ROLE_ADMIN',
-
                 ],
                 'multiple' => true,
                 'expanded' => true,
+                'choice_attr' => [
+                    'Administrateur' => [
+                        'class' => 'me-2'
+                    ],
+                    'class' => 'me-2',
+                ],
+                // 'choice_label' => [
+                //     'class' => 'me-2'
+                // ],
+
             ])
         ;
     }

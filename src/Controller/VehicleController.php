@@ -6,106 +6,129 @@ use DateTime;
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
+use ContainerA5ZDMgU\getVehicleService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
- * @Route("/vehicle")
+ * @Route("admin/vehicles")
+ * @IsGranted("ROLE_ADMIN")
  */
 class VehicleController extends AbstractController
 {
     /**
-     * @Route("/", name="vehicle_index", methods={"GET","POST"})
+     * @Route("/", name="admin_vehicle_index", methods={"GET","POST"})
      */
-    public function index(VehicleRepository $vehicleRepository, Request $request): Response
+    public function index(VehicleRepository $vehicleRepository, Request $request, AuthenticationUtils $authenticationUtils): Response
     {
         $vehicle = new Vehicle();
-        $form = $this->createForm(VehicleType::class, $vehicle);
+        $form = $this->createForm(VehicleType::class, $vehicle, ['attr' => ['class' => 'container']]);
         $formView = $form->createView();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($vehicle);
-            $entityManager->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                /** @var PictureFile $pictureFile */
+                $pictureFile = $form->get('pictureFile')->getData();
+                if ($pictureFile) {
+                    $filename = uniqid() . '.' . $pictureFile->guessExtension();
 
-            return $this->redirectToRoute('vehicle_index', [], Response::HTTP_SEE_OTHER);
+                    $pictureFile->move(
+                        $this->getParameter('cars_pictures_directory'),
+                        $filename
+                    );
+
+                    $vehicle->setPicture($filename);
+                }
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($vehicle);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Véhicule ajouté !');
+
+                return $this->redirectToRoute('admin_vehicle_index', [], Response::HTTP_SEE_OTHER);
+            } else {
+
+                $this->addFlash('error', 'Le formulaire n\'est pas correctement rempli');
+
+            }
+
         }
 
-        return $this->render('vehicle/index.html.twig', [
+        return $this->render('admin/admin_vehicle_index.html.twig', [
             'vehicles' => $vehicleRepository->findAll(),
             'vehicle' => $vehicle,
             'form' => $formView,
+            'last_username' => $authenticationUtils->getLastUsername(),
         ]);
     }
 
     /**
-     * @Route("/new", name="vehicle_new", methods={"GET","POST"})
+     * @Route("/{id}", name="admin_vehicle_show", methods={"GET"})
      */
-    public function new(Request $request): Response
+    public function show(Vehicle $vehicle, AuthenticationUtils $authenticationUtils): Response
     {
-        $vehicle = new Vehicle();
-        $form = $this->createForm(VehicleType::class, $vehicle);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($vehicle);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('vehicle_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('vehicle/new.html.twig', [
+        return $this->render('admin/admin_vehicle_show.html.twig', [
             'vehicle' => $vehicle,
-            'form' => $form,
+            'last_username' => $authenticationUtils->getLastUsername()
         ]);
     }
 
     /**
-     * @Route("/{id}", name="vehicle_show", methods={"GET"})
+     * @Route("/{id}/edit", name="admin_vehicle_edit", methods={"GET","POST"})
      */
-    public function show(Vehicle $vehicle): Response
-    {
-        return $this->render('vehicle/show.html.twig', [
-            'vehicle' => $vehicle,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="vehicle_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Vehicle $vehicle): Response
+    public function edit(Request $request, Vehicle $vehicle, AuthenticationUtils $authenticationUtils): Response
     {
         $form = $this->createForm(VehicleType::class, $vehicle);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var PictureFile $pictureFile */
+            $pictureFile = $form->get('pictureFile')->getData();
+            if ($pictureFile) {
+                $filename = uniqid() . '.' . $pictureFile->guessExtension();
+
+                $pictureFile->move(
+                    $this->getParameter('cars_pictures_directory'),
+                    $filename
+                );
+
+                $vehicle->setPicture($filename);
+            }
             $vehicle->setUpdatedAt(new DateTime());
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Véhicule modifié !');
 
-            return $this->redirectToRoute('vehicle_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('vehicle/edit.html.twig', [
+        return $this->renderForm('admin/admin_vehicle_edit.html.twig', [
             'vehicle' => $vehicle,
             'form' => $form,
+            'last_username' => $authenticationUtils->getLastUsername(),
         ]);
     }
 
     /**
-     * @Route("/{id}/delete", name="vehicle_delete", methods={"GET","POST"})
+     * @Route("/{id}/delete/{token}", name="admin_vehicle_delete", methods={"GET", "POST"})
      */
-    public function delete(Request $request, Vehicle $vehicle): Response
+    public function delete(Vehicle $vehicle, $token): Response
     {
-        // if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $token)) {
             $entityManager = $this->getDoctrine()->getManager();
+            $ordersToRemove = $vehicle->getOrders();
+            foreach($ordersToRemove as $orderToRemove) {
+                $vehicle->removeOrder($orderToRemove);
+            }
             $entityManager->remove($vehicle);
             $entityManager->flush();
-        // }
 
-        return $this->redirectToRoute('vehicle_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('error', 'Véhicule supprimé !');
+        }
+
+        return $this->redirectToRoute('admin_vehicle_index', [], Response::HTTP_SEE_OTHER);
     }
 }

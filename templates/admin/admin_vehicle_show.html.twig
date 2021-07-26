@@ -1,0 +1,65 @@
+{% extends 'admin/admin_index.html.twig' %}
+
+{% block title %}{{parent() }} - Clients{% endblock %}
+
+{% block body %}
+
+    <div class="admin-wrapper flex-direction-column p-4">
+    <h1>Détails véhicule</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Réf</th>
+                <td>{{ vehicle.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom complet</th>
+                <td>{{ vehicle.title }}</td>
+            </tr>
+            <tr>
+                <th>Marque</th>
+                <td>{{ vehicle.brand }}</td>
+            </tr>
+            <tr>
+                <th>Modèle</th>
+                <td>{{ vehicle.model }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ vehicle.description }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td><img src="/uploads/cars/pictures/{{ vehicle.picture }}" style="width: 500px"/></td>
+            </tr>
+            <tr>
+                <th>Prix journalier</th>
+                <td>{{ vehicle.dailyPrice }}</td>
+            </tr>
+            <tr>
+                <th>Entré le</th>
+                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Mis à jour le</th>
+                <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_vehicle_index') }}" class="btn btn-primary" title="retour à la liste"><i class="fas fa-arrow-left me-2"></i>Retour</a>
+
+    <a href="{{ path('admin_vehicle_edit', {'id': vehicle.id}) }}" class="btn btn-warning" title="modifier"><i class="fas fa-edit me-2"></i>Modifier</a>
+
+    <div class="btn-group" title="supprimer">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-trash-alt me-2"></i>Supprimer
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ path('admin_vehicle_delete', {'id': vehicle.id, 'token': csrf_token('delete' ~ vehicle.id) }) }}" title="confirmer suppression">Oui, je veux supprimer</a></li>
+            <li><a class="dropdown-item" href="#" title="annuler suppression">Oups !</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

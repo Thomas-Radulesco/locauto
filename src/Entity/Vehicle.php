@@ -204,4 +204,11 @@ class Vehicle
 
         return $this;
     }
+
+    public function getWebPath(): ?string
+    {
+        // ... $webPath being the full image URL, to be used in templates
+
+        return ($this->picture) ? '/uploads/cars/pictures/'.$this->picture : null;
+    }
 }

@@ -9,75 +9,42 @@ use App\Repository\MemberRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
- * @Route("/member")
+ * @Route("/admin/members")
+ * @IsGranted("ROLE_ADMIN")
  */
 class MemberController extends AbstractController
 {
     /**
-     * @Route("/", name="member_index", methods={"GET"})
+     * @Route("/", name="admin_member_index", methods={"GET"})
      */
-    public function index(MemberRepository $memberRepository, Request $request): Response
+    public function index(MemberRepository $memberRepository, AuthenticationUtils $authenticationUtils): Response
     {
-        $member = new Member();
-        $form = $this->createForm(MemberType::class, $member);
-        $formView = $form->createView();
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($member);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('member/index.html.twig', [
+        return $this->render('admin/admin_member_index.html.twig', [
             'members' => $memberRepository->findAll(),
-            'member' => $member,
-            'form' => $formView,
+            'last_username' => $authenticationUtils->getLastUsername(),
         ]);
     }
 
     /**
-     * @Route("/new", name="member_new", methods={"GET","POST"})
+     * @Route("/{id}", name="admin_member_show", methods={"GET"})
      */
-    public function new(Request $request): Response
+    public function show(Member $member, AuthenticationUtils $authenticationUtils): Response
     {
-        $member = new Member();
-        $form = $this->createForm(MemberType::class, $member);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($member);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('member/new.html.twig', [
+        return $this->render('admin/admin_member_show.html.twig', [
             'member' => $member,
-            'form' => $form,
+            'last_username' => $authenticationUtils->getLastUsername(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="member_show", methods={"GET"})
+     * @Route("/{id}/edit", name="admin_member_edit", methods={"GET","POST"})
      */
-    public function show(Member $member): Response
-    {
-        return $this->render('member/show.html.twig', [
-            'member' => $member,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="member_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Member $member): Response
+    public function edit(Request $request, Member $member, AuthenticationUtils $authenticationUtils): Response
     {
         $form = $this->createForm(MemberType::class, $member);
         $form->handleRequest($request);
@@ -85,27 +52,36 @@ class MemberController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $member->setUpdatedAt(new \DateTime());
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Client modifié !');
 
-            return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_member_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('member/edit.html.twig', [
+        return $this->renderForm('admin/admin_member_edit.html.twig', [
             'member' => $member,
             'form' => $form,
+            'last_username' => $authenticationUtils->getLastUsername(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="member_delete", methods={"POST"})
+     * @Route("/{id}/delete/{token}", name="admin_member_delete", methods={"GET", "POST"})
      */
-    public function delete(Request $request, Member $member): Response
+    public function delete(Request $request, Member $member, $token): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$member->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$member->getId(), $token)) {
             $entityManager = $this->getDoctrine()->getManager();
+            $ordersToRemove = $member->getOrders();
+            foreach($ordersToRemove as $orderToRemove) {
+                $member->removeOrder($orderToRemove);
+            }
             $entityManager->remove($member);
             $entityManager->flush();
+
+            $this->addFlash('error', 'Client supprimé !');
+
         }
 
-        return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_member_index', [], Response::HTTP_SEE_OTHER);
     }
 }

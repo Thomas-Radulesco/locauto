@@ -1,0 +1,57 @@
+{% extends 'admin/admin_index.html.twig' %}
+
+{% block title %}{{parent() }} - Clients{% endblock %}
+
+{% block body %}
+
+    <div class="admin-wrapper flex-direction-column p-4">
+        <h1>Liste des clients</h1>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Adresse email</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col" style="min-width: 170px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for member in members %}
+                <tr>
+                    <td scope="row">{{ member.id }}</td>
+                    <td>{{ member.login }}</td>
+                    <td>{{ member.lastName }}</td>
+                    <td>{{ member.firstName }}</td>
+                    <td>{{ member.emailAddress }}</td>
+                    <td>{{ member.gender }}</td>
+                    <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
+                    <td>
+                        <a href="{{ path('admin_member_show', {'id': member.id}) }}" title="detail" class="btn btn-info btn-detail"><i class="fas fa-search"></i></a>
+                        <a href="{{ path('admin_member_edit', {'id': member.id}) }}" title="edit" class="btn btn-warning btn-edit"><i class="fas fa-edit"></i></a>
+                        <div class="btn-group" title="supprimer">
+                            <button type="button" class="btn btn-danger dropdown-toggle btn-delete" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-trash-alt me-2"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ path('admin_member_delete', {'id': member.id, 'token': csrf_token('delete' ~ member.id) }) }}" title="confirmer suppression">Oui, je veux supprimer</a></li>
+                                <li><a class="dropdown-item" href="#" title="annuler suppression">Oups !</a></li>
+                            </div>
+                            </i>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="11">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-md navbar-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{{path('home')}}"><img class="login-logo" src="{{ asset('build/images/home.jpg')}}" style="width: 100px;"/></a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="navbar-nav mb-2 mb-md-0 d-flex justify-content-between">
+
+				<li class="nav-item">
+					<a class="nav-link active" href="{{ path('home') }}">LocAuto</a>
+				</li>
+
+				{% if app.user %}
+
+					<li class="nav-item dropdown ml-auto">
+						<a class="nav-link dropdown-toggle active" href="#" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fas fa-btn fa-user me-2"></i>
+							Hello,
+							{{ last_username }}
+							!
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdown">
+							<li>
+								<a class="dropdown-item" href="#">
+                                    <i class="fas fa-user-edit pe-2"></i>My account</a>
+							</li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('admin') }}">
+                                        <i class="fas fa-tools pe-2"></i>Administration</a>
+                                </li>
+				            {% endif %}
+							<li>
+								<a class="dropdown-item" href="{{ path('app_logout') }}">
+									<i class="fas fa-sign-out-alt pe-2"></i>Logout</a>
+							</li>
+						</ul>
+					</li>
+
+				{% endif %}
+                {% if not app.user %}
+
+				<div class="ms-auto d-flex flex-direction-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('app_register') }}">Register</a>
+                    </li>
+                                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('app_login') }}">Login</a>
+                    </li>
+                </div>
+
+				{% endif %}
+
+			</ul>
+		</div>
+	</div>
+</nav>
