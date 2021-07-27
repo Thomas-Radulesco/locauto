@@ -5,6 +5,8 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -33,11 +35,13 @@ class Order
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThanOrEqual("today", message="La date de début de location ne doit pas être antérieure à la date d'aujourd'hui")
      */
     private $datetimeFrom;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThanOrEqual(propertyPath="datetimeFrom", message="La date de fin de location doit être postérieure à la date de début")
      */
     private $datetimeTo;
 

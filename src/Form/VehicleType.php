@@ -71,6 +71,7 @@ class VehicleType extends AbstractType
             ])
             ->add('pictureFile', FileType::class, [
                 'image_property' => 'webPath',
+                'image_name' => 'picture',
                 'label_html' => true,
                 'label' => '<i class="fas fa-image btn" style="font-size: 3rem; padding: 0;"></i>',
                 'attr' => [

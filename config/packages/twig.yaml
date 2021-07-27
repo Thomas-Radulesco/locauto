@@ -2,6 +2,8 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     paths:
         'assets/images': images
+    globals:
+        cars_pictures_path: '%cars_pictures_path%'
 
 when@test:
     twig:
