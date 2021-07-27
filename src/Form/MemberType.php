@@ -32,10 +32,6 @@ class MemberType extends AbstractType
                     ],
                     'class' => 'me-2',
                 ],
-                // 'choice_label' => [
-                //     'class' => 'me-2'
-                // ],
-
             ])
         ;
     }

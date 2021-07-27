@@ -24,7 +24,7 @@
 						<ul class="dropdown-menu" aria-labelledby="dropdown">
 							<li>
 								<a class="dropdown-item" href="#">
-                                    <i class="fas fa-user-edit pe-2"></i>My account</a>
+                                    <i class="fas fa-user-edit pe-2"></i>Mon compte</a>
 							</li>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <li>
@@ -34,7 +34,7 @@
 				            {% endif %}
 							<li>
 								<a class="dropdown-item" href="{{ path('app_logout') }}">
-									<i class="fas fa-sign-out-alt pe-2"></i>Logout</a>
+									<i class="fas fa-sign-out-alt pe-2"></i>Déconnexion</a>
 							</li>
 						</ul>
 					</li>
@@ -44,10 +44,10 @@
 
 				<div class="ms-auto d-flex flex-direction-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('app_register') }}">Register</a>
+                        <a class="nav-link active" href="{{ path('app_register') }}">M'inscrire</a>
                     </li>
                                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('app_login') }}">Login</a>
+                        <a class="nav-link active" href="{{ path('app_login') }}">Me connecter</a>
                     </li>
                 </div>
 

@@ -2,44 +2,51 @@
 
 namespace App\Form;
 
-use DateTime;
-use App\Entity\Order;
-use App\Entity\Member;
-use App\Entity\Vehicle;
+use App\Entity\AvailableVehicleSearch;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class OrderType extends AbstractType
+class AvailableVehicleSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('datetimeFrom', DateType::class, [
-                'label' => 'From',
+            ->add('fromDate', DateTimeType::class, [
+                'label' => 'Début de location',
                 'required' => true,
                 'widget' => 'single_text',
                 'model_timezone' => 'Europe/Paris',
                 'view_timezone' => 'Europe/Paris',
                 'attr' => [
+                    'class' => 'form-control',
                     'min' => "2021-01-01",
                 ],
+                'row_attr' => [
+                    'class' => 'form-group',
+                ],
+                'label_attr'=> [
+                    'class' => 'form-label'
+                ]
             ])
-            ->add('datetimeTo', DateType::class, [
-                'label' => 'To',
+            ->add('toDate', DateTimeType::class, [
+                'label' => 'Fin de location',
                 'required' => true,
                 'widget' => 'single_text',
                 'model_timezone' => 'Europe/Paris',
                 'view_timezone' => 'Europe/Paris',
                 'attr' => [
+                    'class' => 'form-control',
                     'min' => "2021-01-01",
                 ],
-            ])
-            ->add('vehicleId', EntityType::class, [
-                'class' => Vehicle::class,
-                'choice_label' => 'title',
+                'row_attr' => [
+                    'class' => 'form-group',
+                ],
+                'label_attr'=> [
+                    'class' => 'form-label'
+                ]
             ])
         ;
     }
@@ -47,7 +54,14 @@ class OrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Order::class,
+            'data_class' => AvailableVehicleSearch::class,
+            'method' => 'get',
+            'csrf_protection' => false,
         ]);
+    }
+
+    public function getBlockPrefix()
+    {
+        return '';
     }
 }

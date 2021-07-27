@@ -19,29 +19,32 @@
 		</div>
 
 		{{ form_start(registrationForm) }}
-            {{ form_row(registrationForm.login) }}
+            {{ form_label(registrationForm.login) }}
+            {{ form_widget(registrationForm.login) }}
+                <div class="invalid-feedback d-inline">
+                    {{ form_errors(registrationForm.login) }}
+                </div>
             {{ form_row(registrationForm.firstName) }}
             {{ form_row(registrationForm.lastName) }}
-            {{ form_row(registrationForm.emailAddress) }}
-            {{ form_row(registrationForm.gender) }}
-            <div class="form-group">
-                {{ form_label(registrationForm.plainPassword.password) }}
-                {{ form_widget(registrationForm.plainPassword.password) }}
-
-            {% if form_errors(registrationForm.plainPassword.password) %}
+            {{ form_label(registrationForm.emailAddress) }}
+            {{ form_widget(registrationForm.emailAddress) }}
                 <div class="invalid-feedback d-inline">
-                    {{ form_errors(registrationForm.plainPassword.password) }}
+                        {{ form_errors(registrationForm.emailAddress) }}
                 </div>
-            {% endif %}
-            </div>
+            {{ form_row(registrationForm.gender) }}
+                <div class="form-group">
+                    {{ form_label(registrationForm.plainPassword.password) }}
+                    {{ form_widget(registrationForm.plainPassword.password) }}
+                    <div class="invalid-feedback d-inline">
+                        {{ form_errors(registrationForm.plainPassword.password) }}
+                    </div>
+                </div>
             {{ form_row(registrationForm.plainPassword.confirm_password) }}
-
-
             {{ form_row(registrationForm.agreeTerms) }}
 
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Register</button>
-            </div>
+                <div class="text-center mb-5">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
 
 		{{ form_end(registrationForm) }}
 	</div>

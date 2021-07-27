@@ -23,10 +23,10 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('login', TextType::class, [
-                'label' => 'Pseudo',
+                'label' => 'Login',
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Votre pseudo'
+                    'placeholder' => 'TheJohnDoe'
                 ],
                 'row_attr' => [
                     'class' => 'form-group',
@@ -76,7 +76,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'label_attr'=> [
                     'class' => 'form-label mt-4'
-                ]
+                ],
             ])
             ->add('gender', ChoiceType::class, [
                 'choices' => [

@@ -28,7 +28,7 @@
                 <td>{{ vehicle.brand }}</td>
                 <td>{{ vehicle.model }}</td>
                 <td>{{ vehicle.description }}</td>
-                <td><img src="/uploads/cars/pictures/{{ vehicle.picture }}" style="width:200px"/></td>
+                <td><img src="{{ cars_pictures_path ~ '/' ~ vehicle.picture }}" style="width:200px" name="vehicle-picture"/><label for="vehicle-picture">{{ vehicle.picture }}</label></td> 
                 <td>{{ vehicle.dailyPrice }}&euro;</td>
                 <td>
                     <a href="{{ path('admin_vehicle_show', {'id': vehicle.id}) }}" title="détails" class="btn btn-info btn-detail"><i class="fas fa-search"></i></a>

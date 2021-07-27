@@ -1,42 +1,56 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/admin_index.html.twig' %}
 
-{% block title %}Order{% endblock %}
+{% block title %}{{parent() }} - Commandes{% endblock %}
 
 {% block body %}
-    <h1>Order</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ order.id }}</td>
-            </tr>
-            <tr>
-                <th>DatetimeFrom</th>
-                <td>{{ order.datetimeFrom ? order.datetimeFrom|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DatetimeTo</th>
-                <td>{{ order.datetimeTo ? order.datetimeTo|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>TotalPrice</th>
-                <td>{{ order.totalPrice }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ order.updatedAt ? order.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('order_index') }}">back to list</a>
-
-    <a href="{{ path('order_edit', {'id': order.id}) }}">edit</a>
-
-    {{ include('order/_delete_form.html.twig') }}
+    <div class="admin-wrapper flex-direction-column p-4">
+        <h1>Détails commande</h1>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Réf</th>
+                    <td>{{ order.id }}</td>
+                </tr>
+                <tr>
+                    <th>Client</th>
+                    <td>{{ order.memberId.login|default(null) }}</td>
+                </tr>
+                <tr>
+                    <th>Véhicule</th>
+                    <td>{{ order.vehicleId.title|default(null) }}</td>
+                </tr>
+                <tr>
+                    <th>Du</th>
+                    <td>{{ order.datetimeFrom ? order.datetimeFrom|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Au</th>
+                    <td>{{ order.datetimeTo ? order.datetimeTo|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Prix total</th>
+                    <td>{{ order.totalPrice }}</td>
+                </tr>
+                <tr>
+                    <th>Passée le</th>
+                    <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Mise à jour le</th>
+                    <td>{{ order.updatedAt ? order.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{ path('admin_order_index') }}" class="btn btn-primary" title="retour à la liste"><i class="fas fa-arrow-left me-2"></i>Retour</a>
+        <a href="{{ path('admin_order_edit', {'id': order.id}) }}" class="btn btn-warning" title="modifier"><i class="fas fa-edit me-2"></i>Modifier</a>
+        <div class="btn-group" title="supprimer">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-trash-alt me-2"></i>Supprimer
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ path('admin_order_delete', {'id': order.id, 'token': csrf_token('delete' ~ order.id) }) }}" title="confirmer suppression">Oui, je veux supprimer</a></li>
+                <li><a class="dropdown-item" href="#" title="annuler suppression">Oups !</a></li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
+use App\Service\ImageUploaderHelper;
 use ContainerA5ZDMgU\getVehicleService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class VehicleController extends AbstractController
     /**
      * @Route("/", name="admin_vehicle_index", methods={"GET","POST"})
      */
-    public function index(VehicleRepository $vehicleRepository, Request $request, AuthenticationUtils $authenticationUtils): Response
+    public function index(VehicleRepository $vehicleRepository, Request $request, AuthenticationUtils $authenticationUtils, ImageUploaderHelper $imageUploaderHelper): Response
     {
         $vehicle = new Vehicle();
         $form = $this->createForm(VehicleType::class, $vehicle, ['attr' => ['class' => 'container']]);
@@ -96,7 +97,7 @@ class VehicleController extends AbstractController
                     $this->getParameter('cars_pictures_directory'),
                     $filename
                 );
-
+                unlink($this->getParameter('cars_pictures_directory').'/'.$vehicle->getPicture());
                 $vehicle->setPicture($filename);
             }
             $vehicle->setUpdatedAt(new DateTime());
@@ -123,6 +124,7 @@ class VehicleController extends AbstractController
             foreach($ordersToRemove as $orderToRemove) {
                 $vehicle->removeOrder($orderToRemove);
             }
+            unlink($this->getParameter('cars_pictures_directory').'/'.$vehicle->getPicture());
             $entityManager->remove($vehicle);
             $entityManager->flush();
 

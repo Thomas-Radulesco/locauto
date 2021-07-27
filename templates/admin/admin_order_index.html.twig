@@ -22,11 +22,10 @@
             </thead>
             <tbody>
             {% for order in orders %}
-            {{ dump (order) }}
                 <tr>
                     <td>{{ order.id }}</td>
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.id }}</td>
+                    <td>{{ order.memberId.login|default(null) }}</td>
+                    <td>{{ order.vehicleId.title|default(null) }}</td>
                     <td>{{ order.datetimeFrom ? order.datetimeFrom|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ order.datetimeTo ? order.datetimeTo|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ order.totalPrice }}</td>
@@ -54,6 +53,5 @@
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('order_new') }}">Create new</a>
     </div>
 {% endblock %}

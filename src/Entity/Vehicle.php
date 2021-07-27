@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use DateTime;
-use App\Repository\VehicleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Service\ImageUploaderHelper;
+use App\Repository\VehicleRepository;
+use Doctrine\Common\Collections\Collection;
+use phpDocumentor\Reflection\Types\Integer;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=VehicleRepository::class)
@@ -209,6 +211,6 @@ class Vehicle
     {
         // ... $webPath being the full image URL, to be used in templates
 
-        return ($this->picture) ? '/uploads/cars/pictures/'.$this->picture : null;
+        return ($this->picture) ? '/'.$this->picture : null;
     }
 }

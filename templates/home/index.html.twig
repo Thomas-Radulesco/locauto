@@ -4,13 +4,30 @@
 
 {% block body %}
 
-<div class="container wrapper">
+<div>
     <header>
         <div class="header-text">
             <h1>Bienvenue à bord</h1>
             <p class="site-layus">Location de voiture 24h/24 et 7j/7</p>
         </div>
-    {{ include('order/_form.html.twig') }}
+        <div class="jumbotron">
+            <div class="container">
+                {{ form_start(form, {'attr': {'class': 'available-vehicle-search-form'}}) }}
+                <div class="d-flex align-items-end">
+                    <div class="col px-4">
+                        {{ form_row(form.fromDate) }}
+                    </div>
+                    <div class="col px-4">
+                        {{ form_row(form.toDate) }}
+                    </div>
+                    <div class="col px-4 text-end">
+                        <button class="btn btn-success">{{ button_label|default('Rechercher') }}</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
     </header>
 
     {% if vehicles %}
@@ -30,7 +47,7 @@
             <li class="vehicles-list-item">
                 <div class="vehicle-item">
                     <div class="vehicle-item-picture">
-                        <img src="/uploads/cars/pictures/{{ vehicle.picture }}" style="width:200px"/>
+                        <img src="{{ cars_pictures_path ~ '/' ~ vehicle.picture }}" style="width:200px"/>
                     </div>
                     <div class="vehicle-item-details">
                         <h2 class="vehicle-item-details-title">{{ vehicle.title }}</h2>

@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <th>Photo</th>
-                <td><img src="/uploads/cars/pictures/{{ vehicle.picture }}" style="width: 500px"/></td>
+                <td class="d-flex flex-column"><img src="{{ cars_pictures_path ~ '/' ~ vehicle.picture }}" style="width: 500px" name="vehicle-picture"/><label for="vehicle-picture">{{ vehicle.picture }}</label></td>
             </tr>
             <tr>
                 <th>Prix journalier</th>
