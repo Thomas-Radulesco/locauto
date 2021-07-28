@@ -97,7 +97,11 @@ class VehicleController extends AbstractController
                     $this->getParameter('cars_pictures_directory'),
                     $filename
                 );
-                unlink($this->getParameter('cars_pictures_directory').'/'.$vehicle->getPicture());
+
+                if($vehicle->getPicture()) {
+                    unlink($this->getParameter('cars_pictures_directory').'/'.$vehicle->getPicture());
+                }
+                
                 $vehicle->setPicture($filename);
             }
             $vehicle->setUpdatedAt(new DateTime());

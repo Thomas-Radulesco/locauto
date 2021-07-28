@@ -41,8 +41,10 @@ class VehicleRepository extends ServiceEntityRepository
             ->orWhere('o.datetimeTo < :beginDate')  // we take the vehicle if it is returned before the beginning of the current search
             ->orWhere('o.datetimeFrom IS NULL')     // we take the vehicle if it is not ordered
             ->orWhere('o.datetimeTo IS NULL')       // idem
+
             ->setParameter('beginDate', $search->getFromDate()->format('Y-m-d H:i:s'))
-            ->setParameter('endDate', $search->getToDate()->format('Y-m-d H:i:s'));
+            ->setParameter('endDate', $search->getToDate()->format('Y-m-d H:i:s'))
+        ;
 
         return $query->getQuery()->getArrayResult();
     }
