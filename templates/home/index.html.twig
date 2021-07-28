@@ -31,28 +31,56 @@
     </header>
 
     {% if vehicles %}
+        <p class="container my-2 vehicles-list-info">
         {% if vehicles|length > 1 %}
-            <p>{{vehicles|length ~ ' résultats'}}</p>
+            {{vehicles|length ~ ' résultats'}}
         {% else %}
-            <p>{{vehicles|length ~ ' résultat'}}</p>
+            {{vehicles|length ~ ' résultat'}}
         {% endif %}
+        </p>
     {% else %}
-        <p>Aucun résultat</p>
+        <p class="container my-2 vehicles-list-info">Aucun résultat</p>
     {% endif %}
 
     {% if vehicles %}
-        <ul class="vehicles-list">
+        <ul class="vehicles-list container">
         {% for vehicle in vehicles %}
 
             <li class="vehicles-list-item">
                 <div class="vehicle-item">
                     <div class="vehicle-item-picture">
+                    {% if vehicle.picture %}
                         <img src="{{ cars_pictures_path ~ '/' ~ vehicle.picture }}" style="width:200px"/>
+                    {% else %}
+                        <img src="https://via.placeholder.com/200x150.webp?text=www.locauto.fr" style="width:200px"/>
+                    {% endif %}
                     </div>
                     <div class="vehicle-item-details">
                         <h2 class="vehicle-item-details-title">{{ vehicle.title }}</h2>
                         <p class="vehicle-item-details-description">{{ vehicle.description }}</p>
-                        <p class="vehicle-item-details-price">{{ vehicle.dailyPrice }}&euro;</p>
+                        {% if disabled is null %}
+                            <p class="vehicle-item-details-price">Prix total : {{ rentalDays * vehicle.dailyPrice }}&euro;</p>                    
+                        {% else %}
+                            <p class="vehicle-item-details-price">Prix journalier : {{ vehicle.dailyPrice }}&euro;</p>                    
+                        {% endif %}
+                        <div class="text-start">
+                            {% if disabled %}
+                                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Vous devez sélectionner une période de location et lancer une recherche de véhicules disponibles avant de pouvoir réserver" data-bs-placement="top">
+                                    <button type="button" class="btn btn-success select-vehicle-button" {{disabled}}>Réserver et payer</button>
+                                </span>
+                            
+                            {% else %}
+                            <form action="{{ path('new_booking')}}" method="post">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token('create' ~ vehicle.id) }}">
+                                <input type="hidden" name="vehicleId" value="{{ vehicle.id }}">
+                                <input type="hidden" name="memberId" value="{{ member.id }}">
+                                <input type="hidden" name="dateFrom" value="{{ dateFrom }}">
+                                <input type="hidden" name="dateTo" value="{{ dateTo }}">
+                                <input type="hidden" name="totalPrice" value="{{ rentalDays * vehicle.dailyPrice }}">
+                                <button type="submit" class="btn btn-success">Réserver et payer</button></a>
+                            </form>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </li>

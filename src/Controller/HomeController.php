@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Order;
 use App\Form\OrderType;
 use Doctrine\ORM\EntityManager;
@@ -9,6 +10,7 @@ use App\Repository\VehicleRepository;
 use App\Entity\AvailableVehicleSearch;
 use App\Form\AvailableVehicleSearchType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,34 +21,41 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(AuthenticationUtils $authenticationUtils, VehicleRepository $vehicleRepository, Request $request): Response
+    public function index(Security $security, AuthenticationUtils $authenticationUtils, VehicleRepository $vehicleRepository, Request $request): Response
     {
         $search = new AvailableVehicleSearch();
         $form = $this->createForm(AvailableVehicleSearchType::class, $search);
         $form->handleRequest($request);
 
-        // dd($search);
         if ($form->isSubmitted() && $form->isValid()) {
             $vehicles = $vehicleRepository->findAllAvailableVehicle($search);
+            $dateFrom = $form->getData()->getFromDate()->format('Y-m-d H:i:s');
+            $dateTo = $form->getData()->getToDate()->format('Y-m-d H:i:s');
+            $disabled = null;
+            $datetimeFrom = $form->getData()->getFromDate();
+            $datetimeTo = $form->getData()->getToDate();
+            $diff = date_diff($datetimeFrom, $datetimeTo);
+            $diffDays = $diff->format('%a');
+            $diffNumber = (int)$diffDays + 1;
         } else {
             $vehicles = $vehicleRepository->findAll();
+            $today = new \DateTime;
+            $dateFrom = $today->format('Y-m-d H:i:s');
+            $dateTo = $today->format('Y-m-d H:i:s');
+            $disabled = 'disabled';
+            $diffNumber = 0;
         }
-        // $order = new Order();
         $formView = $form->createView();
-        // $form->handleRequest($request);
-
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $entityManager->persist($order);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('order_index', [], Response::HTTP_SEE_OTHER);
-        // }
 
         return $this->render('home/index.html.twig', [
             'vehicles' => $vehicles,
             'last_username' => $authenticationUtils->getLastUsername(),
-            'form' =>$formView,
+            'form' => $formView,
+            'member' => $security->getUser(),
+            'dateFrom' => $dateFrom,
+            'dateTo' => $dateTo,
+            'disabled' => $disabled,
+            'rentalDays' => $diffNumber,
         ]);
     }
 }

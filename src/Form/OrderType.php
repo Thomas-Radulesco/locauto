@@ -9,38 +9,52 @@ use App\Entity\Vehicle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class OrderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('datetimeFrom', DateType::class, [
-                'label' => 'From',
-                'required' => true,
-                'widget' => 'single_text',
-                'model_timezone' => 'Europe/Paris',
-                'view_timezone' => 'Europe/Paris',
-                'attr' => [
-                    'min' => "2021-01-01",
+            // ->add('datetimeFrom', DateTimeType::class, [
+            //     'label' => 'From',
+            //     'required' => true,
+            //     'widget' => 'single_text',
+            //     'model_timezone' => 'Europe/Paris',
+            //     'view_timezone' => 'Europe/Paris',
+            //     'attr' => [
+            //         'min' => "2021-01-01",
+            //     ],
+            // ])
+            // ->add('datetimeTo', DateTimeType::class, [
+            //     'label' => 'To',
+            //     'required' => true,
+            //     'widget' => 'single_text',
+            //     'model_timezone' => 'Europe/Paris',
+            //     'view_timezone' => 'Europe/Paris',
+            //     'attr' => [
+            //         'min' => "2021-01-01",
+            //     ],
+            // ])
+            ->add('confirm', CheckboxType::class, [
+                'row_attr' => [
+                    'class' => 'form-group mb-4',
                 ],
-            ])
-            ->add('datetimeTo', DateType::class, [
-                'label' => 'To',
-                'required' => true,
-                'widget' => 'single_text',
-                'model_timezone' => 'Europe/Paris',
-                'view_timezone' => 'Europe/Paris',
-                'attr' => [
-                    'min' => "2021-01-01",
+                'label_attr'=> [
+                    'class' => 'form-label mt-4 me-4'
                 ],
-            ])
-            ->add('vehicleId', EntityType::class, [
-                'class' => Vehicle::class,
-                'choice_label' => 'title',
-            ])
+                'label' => 'Je confirme la réservation',
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'Pour aller plus loin, merci de confirmer la réservation.',
+                    ]),
+                ],
+            ]);
         ;
     }
 

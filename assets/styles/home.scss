@@ -23,11 +23,14 @@ header {
 
 ul {
     list-style-type: none;
-    width: 70%;
     margin-left: auto;
     margin-right: auto;
     padding: 0;
     
+    &.vehicles-list {
+        width: 60%;
+    }
+
     .vehicles-list-item {
         margin-bottom: 40px;
     }
@@ -47,8 +50,12 @@ ul {
     }
 }
 
+p.vehicles-list-info {
+    width: 60%;
+}
+
 form.available-vehicle-search-form {
-    padding: 1rem;
+    padding: 1rem 1rem 1.8rem;
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.3);
 }
