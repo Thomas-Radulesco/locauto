@@ -124,7 +124,9 @@ class VehicleController extends AbstractController
             foreach($ordersToRemove as $orderToRemove) {
                 $vehicle->removeOrder($orderToRemove);
             }
-            unlink($this->getParameter('cars_pictures_directory').'/'.$vehicle->getPicture());
+            if($vehicle->getPicture()) {
+                unlink($this->getParameter('cars_pictures_directory').'/'.$vehicle->getPicture());
+            }
             $entityManager->remove($vehicle);
             $entityManager->flush();
 

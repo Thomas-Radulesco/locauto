@@ -148,19 +148,17 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                // 'attr' => [
-                //     'class' => 'form-control',
-                // ],
                 'row_attr' => [
                     'class' => 'form-group mb-4',
                 ],
                 'label_attr'=> [
                     'class' => 'form-label mt-4 me-4'
                 ],
+                'label' => 'J\'accepte les conditions générales de vente et d\'utilisation',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter nos CGV/CGU.',
                     ]),
                 ],
             ]);
