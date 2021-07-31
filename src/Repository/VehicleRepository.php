@@ -37,7 +37,7 @@ class VehicleRepository extends ServiceEntityRepository
         $query
             ->select('v')                           // select vehicle
             ->leftJoin('v.orders', 'o')             // join orders informations : we have a relation $orders in the Vehicle entity, which is a collection
-            ->where('o.datetimeFrom > :endDate')    // we take the vehicle if it is already ordered after the end of the current search 
+            ->andwhere('o.datetimeFrom > :endDate')    // we take the vehicle if it is already ordered after the end of the current search 
             ->orWhere('o.datetimeTo < :beginDate')  // we take the vehicle if it is returned before the beginning of the current search
             ->orWhere('o.datetimeFrom IS NULL')     // we take the vehicle if it is not ordered
             ->orWhere('o.datetimeTo IS NULL')       // idem

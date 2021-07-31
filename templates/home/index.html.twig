@@ -73,7 +73,7 @@
                             <form action="{{ path('new_booking')}}" method="post">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token('create' ~ vehicle.id) }}">
                                 <input type="hidden" name="vehicleId" value="{{ vehicle.id }}">
-                                <input type="hidden" name="memberId" value="{{ member.id }}">
+                                <input type="hidden" name="memberId" value="{{ member.id | default(null)}}">
                                 <input type="hidden" name="dateFrom" value="{{ dateFrom }}">
                                 <input type="hidden" name="dateTo" value="{{ dateTo }}">
                                 <input type="hidden" name="totalPrice" value="{{ rentalDays * vehicle.dailyPrice }}">
