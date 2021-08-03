@@ -4,7 +4,6 @@
 /.env.local
 /.env.local.php
 /.env.*.local
-/src/DataFixtures/UserFixtures.php
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/

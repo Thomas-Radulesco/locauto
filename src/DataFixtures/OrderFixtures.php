@@ -15,9 +15,11 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $referenceDate = new DateTime();
-        $datetimeFromX = $referenceDate->add(new DateInterval('P4D')); // la période de location commence dans 4 jours (P: period; 4: 4; D: days) 
+        $datetimeFromX = $referenceDate->add(new DateInterval('P4D')); // la période de location commence dans 4 jours (P: period; 4: 4; D: days)
+        $datetimeFromX->setTime(8, 0, 0); // pour tester cette indisponibilité, l'heure de départ est fixée à 08h00
         $referenceDate = new DateTime();
         $datetimeToX = $referenceDate->add(new DateInterval('P11D')); // la période de location finit dans 11 jours
+        $datetimeToX->setTime(17, 0, 0); // pour tester cette indisponibilité, l'heure de départ est fixée à 17h00
         $referenceDate = new DateTime();
         $datetimeFromY = $referenceDate->add(new DateInterval('P2D'));
         $referenceDate = new DateTime();
