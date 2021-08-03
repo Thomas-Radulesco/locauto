@@ -5,4 +5,4 @@ setuptest:
 	php bin/console doctrine:fixtures:load --env=test --no-interaction
 
 test:
-	testcafe chrome tests/testcafe --skip-js-errors
+	testcafe chrome tests/testcafe --skip-js-errors --debug-on-fail
