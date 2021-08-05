@@ -7,7 +7,8 @@ use Doctrine\ORM\Query;
 use App\Entity\AvailableVehicleSearch;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * @method Vehicle|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,9 +19,12 @@ use Doctrine\ORM\EntityManager;
 class VehicleRepository extends ServiceEntityRepository
 {
 
-    public function __construct(ManagerRegistry $registry)
+    private $entityManager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Vehicle::class);
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -32,18 +36,34 @@ class VehicleRepository extends ServiceEntityRepository
     public function findAllAvailableVehicle(AvailableVehicleSearch $search): array 
     {
         // $search initiated on homepage, see HomeController 
-        $query = $this->createQueryBuilder('v');
+        $query = $this->entityManager->createQueryBuilder('v');
+        $unavailableVehicles =  $this->entityManager->createQueryBuilder('v');
 
-        $query
-            ->select('v')                           // select vehicle
-            ->leftJoin('v.orders', 'o')             // join orders informations : we have a relation $orders in the Vehicle entity, which is a collection
-            ->andwhere('o.datetimeFrom > :endDate')    // we take the vehicle if it is already ordered after the end of the current search 
-            ->orWhere('o.datetimeTo < :beginDate')  // we take the vehicle if it is returned before the beginning of the current search
-            ->orWhere('o.datetimeFrom IS NULL')     // we take the vehicle if it is not ordered
-            ->orWhere('o.datetimeTo IS NULL')       // idem
-
+        $unavailableVehicles
+            ->select('v')
+            ->from('App\Entity\Vehicle', 'v')
+            ->join('App\Entity\Order', 'o', 'WITH', 'v.id = o.vehicleId')
+            ->groupBy('v')
+            ->andWhere($unavailableVehicles->expr()->between('o.datetimeFrom', ':beginDate', ':endDate'))
+            ->orWhere($unavailableVehicles->expr()->between('o.datetimeTo', ':beginDate', ':endDate'))
+            ->orWhere($unavailableVehicles->expr()->between(':beginDate', 'o.datetimeFrom', 'o.datetimeTo'))
+            ->orWhere($unavailableVehicles->expr()->between(':endDate', 'o.datetimeFrom', 'o.datetimeTo'))
             ->setParameter('beginDate', $search->getFromDate()->format('Y-m-d H:i:s'))
             ->setParameter('endDate', $search->getToDate()->format('Y-m-d H:i:s'))
+            ->getQuery()
+            ->getArrayResult()
+        ;
+        
+        if ($unavailableVehicles->getQuery()->getArrayResult() == null) {
+            return $this->findAll();
+        }
+
+        $query
+            ->select('v')
+            ->from('App\Entity\Vehicle', 'v')   // select vehicle
+            ->groupBy('v')
+            ->andWhere($query->expr()->notIn('v', ':unavailableVehicles'))
+            ->setParameter('unavailableVehicles', $unavailableVehicles->getQuery()->getArrayResult())
         ;
 
         return $query->getQuery()->getArrayResult();
