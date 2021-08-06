@@ -39,15 +39,15 @@ class VehicleRepository extends ServiceEntityRepository
         $query = $this->entityManager->createQueryBuilder('v');
         $unavailableVehicles =  $this->entityManager->createQueryBuilder('v');
 
+        // we look for the vehicles that are unavailable at our dates
         $unavailableVehicles
             ->select('v')
             ->from('App\Entity\Vehicle', 'v')
             ->join('App\Entity\Order', 'o', 'WITH', 'v.id = o.vehicleId')
             ->groupBy('v')
-            ->andWhere($unavailableVehicles->expr()->between('o.datetimeFrom', ':beginDate', ':endDate'))
-            ->orWhere($unavailableVehicles->expr()->between('o.datetimeTo', ':beginDate', ':endDate'))
-            ->orWhere($unavailableVehicles->expr()->between(':beginDate', 'o.datetimeFrom', 'o.datetimeTo'))
-            ->orWhere($unavailableVehicles->expr()->between(':endDate', 'o.datetimeFrom', 'o.datetimeTo'))
+            ->andWhere($unavailableVehicles->expr()->between('o.datetimeFrom', ':beginDate', ':endDate')) // the unavailability period begins during our needed period
+            ->orWhere($unavailableVehicles->expr()->between('o.datetimeTo', ':beginDate', ':endDate')) // the unavailability period ends during our needed period
+            ->orWhere($unavailableVehicles->expr()->between(':beginDate', 'o.datetimeFrom', 'o.datetimeTo')) // the unavailability period encapsulates our needed period
             ->setParameter('beginDate', $search->getFromDate()->format('Y-m-d H:i:s'))
             ->setParameter('endDate', $search->getToDate()->format('Y-m-d H:i:s'))
             ->getQuery()
@@ -60,9 +60,9 @@ class VehicleRepository extends ServiceEntityRepository
 
         $query
             ->select('v')
-            ->from('App\Entity\Vehicle', 'v')   // select vehicle
+            ->from('App\Entity\Vehicle', 'v')
             ->groupBy('v')
-            ->andWhere($query->expr()->notIn('v', ':unavailableVehicles'))
+            ->andWhere($query->expr()->notIn('v', ':unavailableVehicles')) // select every vehicle 
             ->setParameter('unavailableVehicles', $unavailableVehicles->getQuery()->getArrayResult())
         ;
 
