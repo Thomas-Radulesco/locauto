@@ -23,7 +23,7 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="dropdown">
 							<li>
-								<a class="dropdown-item" href="#">
+								<a class="dropdown-item" href="{{ path('front_profile', {'token': csrf_token('profile' ~ user.id|default(null)) }) }}">
                                     <i class="fas fa-user-edit pe-2"></i>Mon compte</a>
 							</li>
                             {% if is_granted('ROLE_ADMIN') %}

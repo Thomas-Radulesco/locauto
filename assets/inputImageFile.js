@@ -38,8 +38,12 @@ function init() {
               list.style.listStyleType = "none";
               preview.appendChild(list);
               let previousVehiclePicture = document.querySelector('.previous-vehicle-picture');
+              let previousVehiclePictureLabel = document.querySelector('label[for=vehicle-picture]');
               if (previousVehiclePicture) {
                 previousVehiclePicture.style.display = 'none';
+              }
+              if (previousVehiclePictureLabel) {
+                previousVehiclePictureLabel.style.display = 'none';
               }
               for(let i = 0; i < curFiles.length; i++) {
                 let listItem = document.createElement('li');

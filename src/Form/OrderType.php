@@ -20,32 +20,12 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            // ->add('datetimeFrom', DateTimeType::class, [
-            //     'label' => 'From',
-            //     'required' => true,
-            //     'widget' => 'single_text',
-            //     'model_timezone' => 'Europe/Paris',
-            //     'view_timezone' => 'Europe/Paris',
-            //     'attr' => [
-            //         'min' => "2021-01-01",
-            //     ],
-            // ])
-            // ->add('datetimeTo', DateTimeType::class, [
-            //     'label' => 'To',
-            //     'required' => true,
-            //     'widget' => 'single_text',
-            //     'model_timezone' => 'Europe/Paris',
-            //     'view_timezone' => 'Europe/Paris',
-            //     'attr' => [
-            //         'min' => "2021-01-01",
-            //     ],
-            // ])
             ->add('confirm', CheckboxType::class, [
                 'row_attr' => [
                     'class' => 'form-group mb-4',
                 ],
                 'label_attr'=> [
-                    'class' => 'form-label mt-4 me-4'
+                    'class' => 'form-label'
                 ],
                 'label' => 'Je confirme la réservation',
                 'mapped' => false,

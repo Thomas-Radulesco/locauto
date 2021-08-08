@@ -2,46 +2,21 @@
 
 namespace App\Form;
 
-use App\Entity\Member;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ChangePasswordFormType extends AbstractType
+class ResetPasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('oldPassword', PasswordType::class, [
-                'mapped' => false,
-                'label' => 'Votre mot de passe actuel',
-                'attr' => [
-                    'placeholder'=>'votre mot de passe actuel',
-                    'class' => 'form-control',
-                ],
-                'row_attr' => [
-                    'class' => 'form-group',
-                ],
-                'label_attr'=> [
-                    'class' => 'form-label mt-4'
-                ],
-                'constraints' => [
-                    new UserPassword([
-                        'message' => 'Votre mot de passe actuel ne correspond pas'
-                    ])
-                ],
-            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Les mots de passe doivent correspondre',
-                // Instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
                 'attr' => [
                     'class' => 'password-field',
                     'autocomplete' => 'new-password',
@@ -49,11 +24,11 @@ class ChangePasswordFormType extends AbstractType
                 'first_options' => [
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Merci d\'entrer un mot de passe',
+                            'message' => 'Please enter a password',
                         ]),
                         new Length([
-                            'min' => 8,
-                            'minMessage' => 'Le mot de passe doit avoir au moins {{ limit }} caractères',
+                            'min' => 6,
+                            'minMessage' => 'Your password should be at least {{ limit }} characters',
                             // max length allowed by Symfony for security reasons
                             'max' => 4096,
                         ]),
@@ -83,15 +58,17 @@ class ChangePasswordFormType extends AbstractType
                     'label_attr'=> [
                         'class' => 'form-label mt-4'
                     ]
-                ]
+                ],
+                'invalid_message' => 'Les mots de passe doivent correspondre',
+                // Instead of being set onto the object directly,
+                // this is read and encoded in the controller
+                'mapped' => false,
             ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Member::class,
-        ]);
+        $resolver->setDefaults([]);
     }
 }

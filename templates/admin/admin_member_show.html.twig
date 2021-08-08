@@ -33,15 +33,19 @@
                 </tr>
                 <tr>
                     <th>Roles</th>
-                    <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
+                    <td>
+                        {% for role in member.roles %}
+                            <span class="badge fs-5 bg-{{ ( 'ROLE_ADMIN' in role ) ? 'warning' : 'info' }}">{{ role }}</span>
+                        {% endfor %}
+                    </td>
                 </tr>
                 <tr>
                     <th>Inscrit le</th>
-                    <td>{{ member.createdAt ? member.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ member.createdAt ? member.createdAt|date('d-m-Y H:i:s') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Mis à jour le</th>
-                    <td>{{ member.updatedAt ? member.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ member.updatedAt ? member.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                 </tr>
             </tbody>
         </table>

@@ -7,7 +7,7 @@
     <div class="admin-wrapper flex-direction-column p-4">
         <h1>Édition véhicule</h1>
 
-        {{ include('vehicle/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+        {{ include('admin/admin_vehicle_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
         <a href="{{ path('admin_vehicle_index') }}" class="btn btn-primary" title="retour à la liste"><i class="fas fa-arrow-left me-2"></i>Retour</a>
 

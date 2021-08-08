@@ -23,14 +23,34 @@
             <tbody>
             {% for order in orders %}
                 <tr>
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.memberId.login|default(null) }}</td>
-                    <td>{{ order.vehicleId.title|default(null) }}</td>
-                    <td>{{ order.datetimeFrom ? order.datetimeFrom|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ order.datetimeTo ? order.datetimeTo|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ order.id|default(null) }}</td>
+                    <td>
+                        {% if order.memberId %}
+                            <a href="{{ path('admin_member_show', {'id': order.memberId.id|default(null)} )}}">
+                                {{ order.memberId.login|default(null) }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.vehicleId %}
+                            <a href="{{ path('admin_vehicle_show', {'id': order.vehicleId.id} )}}">{{ order.vehicleId.title|default(null) }}</a>
+                                {% if order.vehicleId.picture %}
+                                    <a href="{{ path('admin_vehicle_show', {'id': order.vehicleId.id} )}}">
+                                        <img src="{{ cars_pictures_path ~ '/' ~ order.vehicleId.picture }}" style="width: 100px; margin-left: 2rem;" name="vehicle-picture"/>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('admin_vehicle_show', {'id': order.vehicleId.id} )}}">
+                                        <img src="https://via.placeholder.com/200x150.webp?text=www.locauto.fr" style="width: 100px; margin-left: 2rem;" name="vehicle-picture"/>
+                                    </a>
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ order.datetimeFrom ? order.datetimeFrom|date('d-m-Y H:i:s') : '' }}</td>
+                    <td>{{ order.datetimeTo ? order.datetimeTo|date('d-m-Y H:i:s') : '' }}</td>
                     <td>{{ order.totalPrice }}</td>
-                    <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ order.updatedAt ? order.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ order.createdAt ? order.createdAt|date('d-m-Y H:i:s') : '' }}</td>
+                    <td>{{ order.updatedAt ? order.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                     <td>
                         <a href="{{ path('admin_order_show', {'id': order.id}) }}" title="détails" class="btn btn-info btn-detail"><i class="fas fa-search"></i></a>
                         <a href="{{ path('admin_order_edit', {'id': order.id}) }}" title="modifier" class="btn btn-warning btn-edit"><i class="fas fa-edit"></i></a>

@@ -1,0 +1,45 @@
+{% extends 'front/front_index.html.twig' %}
+
+{% block title %}{{parent() }} - Mes informations{% endblock %}
+
+{% block body %}
+    <div class="admin-wrapper flex-direction-column p-4">
+        <h1>Mes informations</h1>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Login</th>
+                    <td>{{ user.login }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom Nom</th>
+                    <td>{{ user.firstName|default(null) }} {{ user.lastName|default(null) }}</td>
+                </tr>
+                <tr>
+                    <th>Adresse mail</th>
+                    <td>{{ user.emailAddress }}</td>
+                </tr>
+                <tr>
+                    <th>Homme / Femme</th>
+                    <td>{{ user.gender }}</td>
+                </tr>
+                <tr>
+                    <th>{{ user.roles|length > 1 ? 'Roles' : 'Role' }}</th>
+                    <td>
+                    {% for role in user.roles %}
+                        <span class="badge rounded-pill fs-4 bg-{{ ( 'ROLE_ADMIN' in role ) ? 'warning' : 'info' }}">{{ role }}</span>
+                    {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Inscrit le</th>
+                    <td>{{ user.createdAt|date('d-m-Y H:i:s') }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('front_profile', {'token': csrf_token('profile' ~ user.id|default(null)) }) }}" class="btn btn-primary" title="retour"><i class="fas fa-arrow-left me-2"></i>Retour</a>
+            <a href="{{ path('front_profile_edit', {'id': user.id, 'token': csrf_token('edit' ~ user.id|default(null))}) }}" class="btn btn-warning" title="modifier"><i class="fas fa-edit me-2"></i>Modifier</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'front/front_index.html.twig' %}
+
+{% block title %}{{parent() }} - Commande {{ order.id }}{% endblock %}
+
+{% block body %}
+    <div class="admin-wrapper flex-direction-column p-4">
+        <h1>Détails commande</h1>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Réf</th>
+                    <td>{{ order.id }}</td>
+                </tr>
+                <tr>
+                    <th>Véhicule</th>
+                    <td>{{ order.vehicleId.title|default(null) }}</td>
+                </tr>
+                <tr>
+                    <th>Photo</th>
+                    {% if order.vehicleId.picture %}
+                        <td class="d-flex flex-column"><img src="{{ cars_pictures_path ~ '/' ~ order.vehicleId.picture }}" style="width: 500px" name="vehicle-picture"/><label for="vehicle-picture"></label></td>
+                    {% else %}
+                        <td class="d-flex flex-column"><img src="https://via.placeholder.com/200x150.webp?text=www.locauto.fr" style="width: 500px" name="vehicle-picture"/><label for="vehicle-picture">Pas de photo disponible</label></td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Du</th>
+                    <td>{{ order.datetimeFrom ? order.datetimeFrom|date('d-m-Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Au</th>
+                    <td>{{ order.datetimeTo ? order.datetimeTo|date('d-m-Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Prix total</th>
+                    <td>{{ order.totalPrice }}</td>
+                </tr>
+                <tr>
+                    <th>Passée le</th>
+                    <td>{{ order.createdAt ? order.createdAt|date('d-m-Y H:i:s') : '' }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{ path('front_profile_order_index', {'token': csrf_token('profile' ~ user.id|default(null)) }) }}" class="btn btn-primary" title="retour à la liste"><i class="fas fa-arrow-left me-2"></i>Retour</a>
+    </div>
+{% endblock %}

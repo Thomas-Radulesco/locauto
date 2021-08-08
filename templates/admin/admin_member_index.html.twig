@@ -28,7 +28,11 @@
                     <td>{{ member.firstName }}</td>
                     <td>{{ member.emailAddress }}</td>
                     <td>{{ member.gender }}</td>
-                    <td>{{ member.roles ? member.roles|json_encode : '' }}</td>
+                    <td>
+                    {% for role in member.roles %}
+                        <span class="badge bg-{{ ( 'ROLE_ADMIN' in role ) ? 'warning' : 'info' }}">{{ role }}</span>
+                    {% endfor %}
+                    </td>
                     <td>
                         <a href="{{ path('admin_member_show', {'id': member.id}) }}" title="detail" class="btn btn-info btn-detail"><i class="fas fa-search"></i></a>
                         <a href="{{ path('admin_member_edit', {'id': member.id}) }}" title="edit" class="btn btn-warning btn-edit"><i class="fas fa-edit"></i></a>

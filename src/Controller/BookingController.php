@@ -33,6 +33,7 @@ class BookingController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
+        $user = $this->getUser();
         $order = new Order();
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
@@ -50,7 +51,6 @@ class BookingController extends AbstractController
             $diffDays = $diff->format('%a');
             $diffNumber = (int)$diffDays + 1;
             $totalPrice = $diffNumber * $booking['vehicleId']->getDailyPrice();
-            // dd($order);
             $order
                 ->setMemberId($booking['memberId'])
                 ->setVehicleId($booking['vehicleId'])
@@ -67,6 +67,7 @@ class BookingController extends AbstractController
         }
 
         return $this->renderForm('order/new.html.twig', [
+            'user' => $user,
             'order' => $order,
             'form' => $form,
             'last_username' => $authenticationUtils->getLastUsername(),

@@ -1,16 +1,24 @@
 {% extends 'admin/admin_index.html.twig' %}
 
-{% block title %}{{parent()}} - Edition utilisateur{% endblock %}
+{% block title %}{{parent()}} - Edition commande{% endblock %}
 
 {% block body %}
 
     <div class="admin-wrapper flex-direction-column p-4">
         <h1>Édition commande</h1>
 
-        {{ include('order/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('admin/admin_order_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-        <a href="{{ path('admin_order_index') }}">back to list</a>
 
-        {{ include('order/_delete_form.html.twig') }}
+        <div class="btn-group" title="supprimer">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-trash-alt me-2"></i>Supprimer
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ path('admin_order_delete', {'id': order.id, 'token': csrf_token('delete' ~ order.id) }) }}" title="confirmer suppression">Oui, je veux supprimer</a></li>
+                <li><a class="dropdown-item" href="#" title="annuler suppression">Oups !</a></li>
+            </ul>
+        </div>
+        <a href="{{ path('admin_order_index') }}" class="btn btn-primary" title="retour à la liste"><i class="fas fa-arrow-left me-2"></i>Retour</a>
     </div>
 {% endblock %}
