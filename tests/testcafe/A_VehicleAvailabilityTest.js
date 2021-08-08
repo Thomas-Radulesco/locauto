@@ -31,7 +31,7 @@ test('A : demande incluse dans l\'indisponibilité', async t => {
     .expect(Selector(fromDateSelector).value).eql(fromDateValue)
     .expect(Selector(toDateSelector).value).eql(toDateValue)
     .expect(Selector(firstResult).innerText).eql('Z')
-    .expect(Selector(firstResultTotalPrice).innerText).eql('Prix total : 900€')
+    .expect(Selector(firstResultTotalPrice).innerText).eql('Prix total : 900 €')
     ;
 });
 
@@ -80,9 +80,9 @@ test('D : demande commence pendant et s\'arrête après l\'indisponibilité', as
         .expect(Selector(fromDateSelector).value).eql(fromDateValue)
         .expect(Selector(toDateSelector).value).eql(toDateValue)
         .expect(Selector(firstResult).innerText).eql('Y')
-        .expect(Selector(firstResultTotalPrice).innerText).eql('Prix total : 300€')
+        .expect(Selector(firstResultTotalPrice).innerText).eql('Prix total : 300 €')
         .expect(Selector(secondResult).innerText).eql('Z')
-        .expect(Selector(secondResultTotalPrice).innerText).eql('Prix total : 900€')
+        .expect(Selector(secondResultTotalPrice).innerText).eql('Prix total : 900 €')
         .expect(Selector(thirdResult).exists).notOk()
     ;
 });
@@ -116,7 +116,7 @@ test('F : demande avant l\'indisponibilité', async t => {
         .expect(Selector(fromDateSelector).value).eql(fromDateValue)
         .expect(Selector(toDateSelector).value).eql(toDateValue)
         .expect(Selector(firstResult).innerText).eql('X')
-        .expect(Selector(firstResultTotalPrice).innerText).eql('Prix total : 600€')
+        .expect(Selector(firstResultTotalPrice).innerText).eql('Prix total : 600 €')
         .expect(Selector(secondResult).exists).notOk()
         .expect(Selector(thirdResult).exists).notOk()
     ;
@@ -135,10 +135,10 @@ test('G : demande après l\'indisponibilité', async t => {
         .expect(Selector(fromDateSelector).value).eql(fromDateValue)
         .expect(Selector(toDateSelector).value).eql(toDateValue)
         .expect(Selector(firstResult).innerText).eql('X')
-        .expect(Selector(firstResultTotalPrice).innerText).eql('Prix total : 600€')
+        .expect(Selector(firstResultTotalPrice).innerText).eql('Prix total : 600 €')
         .expect(Selector(secondResult).innerText).eql('Y')
-        .expect(Selector(secondResultTotalPrice).innerText).eql('Prix total : 300€')
+        .expect(Selector(secondResultTotalPrice).innerText).eql('Prix total : 300 €')
         .expect(Selector(thirdResult).innerText).eql('Z')
-        .expect(Selector(thirdResultTotalPrice).innerText).eql('Prix total : 900€')
+        .expect(Selector(thirdResultTotalPrice).innerText).eql('Prix total : 900 €')
     ;
 });
