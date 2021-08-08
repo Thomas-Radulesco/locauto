@@ -1,0 +1,43 @@
+{% form_theme form 'form/fields.html.twig' %}
+
+{{ form_start(form) }}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{{ form_label(form.memberId) }}</th>
+                <td>{{ form_widget(form.memberId) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.vehicleId) }}</th>
+                <td>{{ form_widget(form.vehicleId) }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                {% if form.vehicleId.vars.data %}
+                    {% if form.vehicleId.vars.data.picture %}
+                        <td class="d-flex flex-column"><img src="{{ cars_pictures_path ~ '/' ~ form.vehicleId.vars.data.picture }}" style="width: 500px" name="vehicle-picture" /><label for="vehicle-picture">{{ form.vehicleId.vars.data.title }}</label></td>
+                    {% else %}
+                        <td class="d-flex flex-column"><img src="https://via.placeholder.com/200x150.webp?text=www.locauto.fr" style="width: 500px" name="vehicle-picture"/><label for="vehicle-picture">Pas de photo disponible</label></td>
+                    {% endif %}
+                {% endif %}
+            </tr>
+            <tr>
+                <th>{{ form_label(form.datetimeFrom) }}</th>
+                <td>{{ form_widget(form.datetimeFrom) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.datetimeTo) }}</th>
+                <td>{{ form_widget(form.datetimeTo) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.totalPrice) }}</th>
+                <td>{{ form_widget(form.totalPrice) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{{ form_widget(form) }}
+
+    <div class="d-flex justify-content-between flex-row-reverse my-4">
+        <button class="btn btn-success" type="submit"><i class="fas fa-save me-2"></i>{{ button_label|default('Réserver') }}</button>
+{{ form_end(form) }}

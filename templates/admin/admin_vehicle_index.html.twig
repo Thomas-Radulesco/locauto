@@ -17,7 +17,7 @@
                 <th scope="col" style="max-width: 500px;">Description</th>
                 <th scope="col">Photo</th>
                 <th scope="col">Prix journalier</th>
-                <th scope="col" style="min-width: 170px;">Actions</th>
+                <th scope="col" style="min-width: 180px;">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -28,8 +28,17 @@
                 <td>{{ vehicle.brand }}</td>
                 <td>{{ vehicle.model }}</td>
                 <td>{{ vehicle.description }}</td>
-                <td><img src="{{ cars_pictures_path ~ '/' ~ vehicle.picture }}" style="width:200px" name="vehicle-picture"/><label for="vehicle-picture">{{ vehicle.picture }}</label></td> 
-                <td>{{ vehicle.dailyPrice }}&euro;</td>
+                <td>
+                {% if vehicle.picture %}
+                    <img src="{{ cars_pictures_path ~ '/' ~ vehicle.picture }}" style="width:200px" name="vehicle-picture"/>
+                    <label for="vehicle-picture">
+                        {{ vehicle.picture }}
+                    </label>
+                {% else %}
+                    <img src="https://via.placeholder.com/200x150.webp?text=www.locauto.fr" style="width:200px" name="vehicle-picture"/>
+                {% endif %}
+                </td> 
+                <td>{{ vehicle.dailyPrice }} &euro;</td>
                 <td>
                     <a href="{{ path('admin_vehicle_show', {'id': vehicle.id}) }}" title="détails" class="btn btn-info btn-detail"><i class="fas fa-search"></i></a>
                     <a href="{{ path('admin_vehicle_edit', {'id': vehicle.id}) }}" title="modifier" class="btn btn-warning btn-edit"><i class="fas fa-edit"></i></a>

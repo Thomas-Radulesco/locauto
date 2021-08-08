@@ -23,6 +23,7 @@ class HomeController extends AbstractController
      */
     public function index(Security $security, AuthenticationUtils $authenticationUtils, VehicleRepository $vehicleRepository, Request $request): Response
     {
+        $user = $this->getUser();
         $search = new AvailableVehicleSearch();
         $form = $this->createForm(AvailableVehicleSearchType::class, $search);
         $form->handleRequest($request);
@@ -51,7 +52,7 @@ class HomeController extends AbstractController
             'vehicles' => $vehicles,
             'last_username' => $authenticationUtils->getLastUsername(),
             'form' => $formView,
-            'member' => $security->getUser(),
+            'user' => $user,
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
             'disabled' => $disabled,

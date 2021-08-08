@@ -16,8 +16,10 @@ class AdminController extends AbstractController
      */
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        $user = $this->getUser();
+
         return $this->render('admin/admin_index.html.twig', [
-            'controller_name' => 'AdminController',
+            'user' => $user,
             'last_username' => $authenticationUtils->getLastUsername(),
         ]);
     }

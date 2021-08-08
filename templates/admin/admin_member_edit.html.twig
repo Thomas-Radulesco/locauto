@@ -34,15 +34,15 @@
             </tr>
             <tr>
                 <th>Inscrit le</th>
-                <td>{{ member.createdAt ? member.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ member.createdAt ? member.createdAt|date('d-m-Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Mis à jour le</th>
-                <td>{{ member.updatedAt ? member.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ member.updatedAt ? member.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Rôles</th>
-                <td>{{ include('member/_form.html.twig', {'button_label': 'Mettre à jour'}) }} </td>
+                <td>{{ include('admin/admin_member_form.html.twig', {'button_label': 'Mettre à jour'}) }} </td>
             </tr>
         </tbody>
     </table>

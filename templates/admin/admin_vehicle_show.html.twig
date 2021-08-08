@@ -31,7 +31,16 @@
             </tr>
             <tr>
                 <th>Photo</th>
-                <td class="d-flex flex-column"><img src="{{ cars_pictures_path ~ '/' ~ vehicle.picture }}" style="width: 500px" name="vehicle-picture"/><label for="vehicle-picture">{{ vehicle.picture }}</label></td>
+                <td class="d-flex flex-column">
+                    {% if vehicle.picture %}
+                    <img src="{{ cars_pictures_path ~ '/' ~ vehicle.picture }}" style="width: 500px" name="vehicle-picture"/>
+                    <label for="vehicle-picture">
+                        {{ vehicle.picture }}
+                    </label>
+                    {% else %}
+                    <img src="https://via.placeholder.com/200x150.webp?text=www.locauto.fr" style="width: 200px" name="vehicle-picture"/>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Prix journalier</th>
@@ -39,11 +48,11 @@
             </tr>
             <tr>
                 <th>Entré le</th>
-                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('d-m-Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Mis à jour le</th>
-                <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>

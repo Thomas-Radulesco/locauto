@@ -14,6 +14,7 @@ import './styles/app.scss';
 // start the Stimulus application
 import './bootstrap';
 import './inputImageFile';
+import './vehicleImagePreview';
 
 const $ = require('jquery');
 

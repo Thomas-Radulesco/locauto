@@ -59,9 +59,9 @@
                         <h2 class="vehicle-item-details-title">{{ vehicle.title }}</h2>
                         <p class="vehicle-item-details-description">{{ vehicle.description }}</p>
                         {% if disabled is null %}
-                            <p class="vehicle-item-details-price">Prix total : {{ rentalDays * vehicle.dailyPrice }}&euro;</p>                    
+                            <p class="vehicle-item-details-price">Prix total : {{ rentalDays * vehicle.dailyPrice }} &euro;</p>                    
                         {% else %}
-                            <p class="vehicle-item-details-price">Prix journalier : {{ vehicle.dailyPrice }}&euro;</p>                    
+                            <p class="vehicle-item-details-price">Prix journalier : {{ vehicle.dailyPrice }} &euro;</p>                    
                         {% endif %}
                         <div class="text-start">
                             {% if disabled %}
@@ -73,7 +73,7 @@
                             <form action="{{ path('new_booking')}}" method="post">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token('create' ~ vehicle.id) }}">
                                 <input type="hidden" name="vehicleId" value="{{ vehicle.id }}">
-                                <input type="hidden" name="memberId" value="{{ member.id | default(null)}}">
+                                <input type="hidden" name="memberId" value="{{ user.id | default(null)}}">
                                 <input type="hidden" name="dateFrom" value="{{ dateFrom }}">
                                 <input type="hidden" name="dateTo" value="{{ dateTo }}">
                                 <input type="hidden" name="totalPrice" value="{{ rentalDays * vehicle.dailyPrice }}">

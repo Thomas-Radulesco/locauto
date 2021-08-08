@@ -4,6 +4,7 @@ twig:
         'assets/images': images
     globals:
         cars_pictures_path: '%cars_pictures_path%'
+    form_themes: ['bootstrap_4_layout.html.twig']
 
 when@test:
     twig:

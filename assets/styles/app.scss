@@ -49,6 +49,35 @@ nav.navbar {
     width: 220px;
     z-index: 1;
     text-align: center;
+    animation: transform 1s linear 3s 1 normal both;
+    transform: translateX(300%);
+}
+
+.alert {
+    margin-bottom: 0;
+    box-shadow: 10px 10px 50px 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes transform {
+    from {
+        transform: translateX(0%);
+    }
+
+    to {
+        transform: translateX(300%);
+    }
+}
+
+.table td {
+    padding: 1rem ;
+}
+
+.badge {
+    padding-top: 0.40em;
+}
+
+.badge-danger {
+    background-color: rgba(var(--bs-danger-rgb), var(--bs-bg-opacity));
 }
 
 ul.dropdown-menu.show {

@@ -13,19 +13,48 @@
                 </tr>
                 <tr>
                     <th>Client</th>
-                    <td>{{ order.memberId.login|default(null) }}</td>
+                    <td>
+                        {% if order.memberId %}
+                            <a href="{{ path('admin_member_show', {'id': order.memberId.id} )}}">
+                                {{ order.memberId.login|default(null) }}
+                            </a>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <th>Véhicule</th>
-                    <td>{{ order.vehicleId.title|default(null) }}</td>
+                    <td>
+                        {% if order.vehicleId %}
+                            <a href="{{ path('admin_vehicle_show', {'id': order.vehicleId.id} )}}">
+                                {{ order.vehicleId.title|default(null) }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Photo</th>
+                        {% if order.vehicleId %}
+                            {% if order.vehicleId.picture %}
+                                <td class="d-flex flex-column">
+                                    <a href="{{ path('admin_vehicle_show', {'id': order.vehicleId.id} )}}">
+                                        <img src="{{ cars_pictures_path ~ '/' ~ order.vehicleId.picture }}" style="width: 500px" name="vehicle-picture"/>
+                                    </a>
+                                        <label for="vehicle-picture">
+                                            {{order.vehicleId.picture}}
+                                        </label>
+                                </td>
+                            {% else %}
+                                <td class="d-flex flex-column"><img src="https://via.placeholder.com/200x150.webp?text=www.locauto.fr" style="width: 500px" name="vehicle-picture"/><label for="vehicle-picture">Pas de photo disponible</label></td>
+                            {% endif %}
+                        {% endif %}
                 </tr>
                 <tr>
                     <th>Du</th>
-                    <td>{{ order.datetimeFrom ? order.datetimeFrom|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ order.datetimeFrom ? order.datetimeFrom|date('d-m-Y H:i:s') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Au</th>
-                    <td>{{ order.datetimeTo ? order.datetimeTo|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ order.datetimeTo ? order.datetimeTo|date('d-m-Y H:i:s') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Prix total</th>
@@ -33,11 +62,11 @@
                 </tr>
                 <tr>
                     <th>Passée le</th>
-                    <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ order.createdAt ? order.createdAt|date('d-m-Y H:i:s') : '' }}</td>
                 </tr>
                 <tr>
                     <th>Mise à jour le</th>
-                    <td>{{ order.updatedAt ? order.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ order.updatedAt ? order.updatedAt|date('d-m-Y H:i:s') : '' }}</td>
                 </tr>
             </tbody>
         </table>

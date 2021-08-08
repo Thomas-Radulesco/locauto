@@ -11,7 +11,19 @@
             </tr>
             <tr>
                 <th>Photo</th>
-                <td class="d-flex flex-column"><img src="{{ cars_pictures_path ~ '/' ~ booking.vehicleId.picture }}" style="width: 500px" name="vehicle-picture"/><label for="vehicle-picture">{{ booking.vehicleId.title }}</label></td>
+                <td class="d-flex flex-column">
+                {% if booking.vehicleId.picture %}
+                    <img src="{{ cars_pictures_path ~ '/' ~ booking.vehicleId.picture }}" style="width: 500px" name="vehicle-picture"/>
+                    <label for="vehicle-picture">
+                        {{ booking.vehicleId.title }}
+                    </label>
+                {% else %}
+                    <img src="https://via.placeholder.com/200x150.webp?text=www.locauto.fr" style="width: 200px" name="vehicle-picture"/>
+                    <label for="vehicle-picture">
+                        Pas de photo disponible
+                    </label>
+                {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Prix journalier</th>
@@ -19,11 +31,11 @@
             </tr>
             <tr>
                 <th>Période du</th>
-                <td>{{ booking.datetimeFrom }}</td>
+                <td>{{ booking.datetimeFrom|date('d-m-Y H:i:s') }}</td>
             </tr>
             <tr>
                 <th>Au</th>
-                <td>{{ booking.datetimeTo }}</td>
+                <td>{{ booking.datetimeTo|date('d-m-Y H:i:s') }}</td>
             </tr>
             <tr>
                 <th>Prix total</th>
@@ -40,5 +52,5 @@
     <input type="hidden" name="dateTo" value="{{ booking.datetimeTo }}">
     <input type="hidden" name="totalPrice" value="{{ booking.totalPrice }}">
     <div class="d-flex justify-content-between flex-row-reverse my-4">
-        <button class="btn btn-success" type="submit"><i class="fas fa-save me-2"></i>{{ button_label|default('Save') }}</button>
+        <button class="btn btn-success" type="submit"><i class="fas fa-save me-2"></i>{{ button_label|default('Réserver') }}</button>
 {{ form_end(form) }}

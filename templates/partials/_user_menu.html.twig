@@ -1,0 +1,20 @@
+<div class="sidebar-wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Menu client</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li {{('/profile/orders' in app.request.pathinfo) ? 'class="active"' : '' }}>
+                <a href="{{path('front_profile_order_index', {'token': csrf_token('profile' ~ user.id|default(null)) })}}">Mes commandes</a>
+            </li>
+            <li {{ ('/profile/details' in app.request.pathinfo) or ('/profile/edit' in app.request.pathinfo) ? 'class="active"' : '' }}>
+                <a href="{{path('front_profile_show', {'token': csrf_token('profile' ~ user.id|default(null)) })}}">Mes informations</a>
+            </li>
+            <li {{ ('/profile/password' in app.request.pathinfo) ? 'class="active"' : '' }}>
+                <a href="{{path('front_profile_password', {'token': csrf_token('password' ~ user.id|default(null)) })}}">Mon mot de passe</a>
+            </li>
+        </ul>
+    </nav>
+
+</div>

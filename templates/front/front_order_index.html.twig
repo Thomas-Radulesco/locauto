@@ -1,0 +1,43 @@
+{% extends 'front/front_index.html.twig' %}
+
+{% block title %}{{parent() }} - Mes commandes{% endblock %}
+
+{% block body %}
+
+    <div class="admin-wrapper flex-direction-column p-4">
+        <h1>Mes commandes</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Réf</th>
+                    <th>Véhicule</th>
+                    <th>Du</th>
+                    <th>Au</th>
+                    <th>Prix total</th>
+                    <th>Passée le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.vehicleId.title|default(null) }}</td>
+                    <td>{{ order.datetimeFrom ? order.datetimeFrom|date('d-m-Y H:i:s') : '' }}</td>
+                    <td>{{ order.datetimeTo ? order.datetimeTo|date('d-m-Y H:i:s') : '' }}</td>
+                    <td>{{ order.totalPrice }}</td>
+                    <td>{{ order.createdAt ? order.createdAt|date('d-m-Y H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('front_profile_order_show', {'id': order.id, 'token': csrf_token('show' ~ order.id) }) }}" title="détails" class="btn btn-info btn-detail"><i class="fas fa-search"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('front_profile', {'token': csrf_token('profile' ~ user.id|default(null)) }) }}" class="btn btn-primary" title="retour"><i class="fas fa-arrow-left me-2"></i>Retour</a>
+    </div>
+{% endblock %}

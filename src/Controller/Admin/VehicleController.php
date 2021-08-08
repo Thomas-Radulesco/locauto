@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Admin\Controller;
 
 use DateTime;
 use App\Entity\Vehicle;
@@ -24,8 +24,10 @@ class VehicleController extends AbstractController
     /**
      * @Route("/", name="admin_vehicle_index", methods={"GET","POST"})
      */
-    public function index(VehicleRepository $vehicleRepository, Request $request, AuthenticationUtils $authenticationUtils, ImageUploaderHelper $imageUploaderHelper): Response
+    public function index(VehicleRepository $vehicleRepository, Request $request, AuthenticationUtils $authenticationUtils): Response
     {
+        $user = $this->getUser();
+
         $vehicle = new Vehicle();
         $form = $this->createForm(VehicleType::class, $vehicle, ['attr' => ['class' => 'container']]);
         $formView = $form->createView();
@@ -61,6 +63,7 @@ class VehicleController extends AbstractController
         }
 
         return $this->render('admin/admin_vehicle_index.html.twig', [
+            'user' => $user,
             'vehicles' => $vehicleRepository->findAll(),
             'vehicle' => $vehicle,
             'form' => $formView,
@@ -73,7 +76,10 @@ class VehicleController extends AbstractController
      */
     public function show(Vehicle $vehicle, AuthenticationUtils $authenticationUtils): Response
     {
+        $user = $this->getUser();
+
         return $this->render('admin/admin_vehicle_show.html.twig', [
+            'user' => $user,
             'vehicle' => $vehicle,
             'last_username' => $authenticationUtils->getLastUsername()
         ]);
@@ -84,6 +90,8 @@ class VehicleController extends AbstractController
      */
     public function edit(Request $request, Vehicle $vehicle, AuthenticationUtils $authenticationUtils): Response
     {
+        $user = $this->getUser();
+
         $form = $this->createForm(VehicleType::class, $vehicle);
         $form->handleRequest($request);
 
@@ -111,6 +119,7 @@ class VehicleController extends AbstractController
         }
 
         return $this->renderForm('admin/admin_vehicle_edit.html.twig', [
+            'user' => $user,
             'vehicle' => $vehicle,
             'form' => $form,
             'last_username' => $authenticationUtils->getLastUsername(),
@@ -122,6 +131,8 @@ class VehicleController extends AbstractController
      */
     public function delete(Vehicle $vehicle, $token): Response
     {
+        $user = $this->getUser();
+
         if ($this->isCsrfTokenValid('delete'.$vehicle->getId(), $token)) {
             $entityManager = $this->getDoctrine()->getManager();
             $ordersToRemove = $vehicle->getOrders();
@@ -137,6 +148,8 @@ class VehicleController extends AbstractController
             $this->addFlash('error', 'Véhicule supprimé !');
         }
 
-        return $this->redirectToRoute('admin_vehicle_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_vehicle_index', [
+            'user' => $user,
+        ], Response::HTTP_SEE_OTHER);
     }
 }
