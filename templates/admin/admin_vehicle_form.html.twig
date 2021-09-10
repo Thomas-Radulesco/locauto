@@ -1,6 +1,13 @@
+{% dump(photo_label|default('Aucune photo sélectionnée')) %}
+{% dump(form) %}
 {% form_theme form 'form/fields.html.twig' %}
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.brand) }}
+    {{ form_row(form.model) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.pictureFile, { 'photo_label': photo_label|default('Aucune photo sélectionnée') }) }}
+    {{ form_row(form.dailyPrice) }}
     <div class="text-center my-4">
         <button class="btn btn-success"><i class="fas fa-save me-2"></i>{{ button_label|default('Ajouter véhicule') }}</button>
     </div>

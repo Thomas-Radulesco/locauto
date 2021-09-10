@@ -18,9 +18,9 @@ class MemberAdminType extends AbstractType
         $builder
             ->add('roles', ChoiceType::class, [
                 'attr' => ['class' => 'align-items-center'],
-                'label_attr' => [
-                    'class' => 'd-none',
-                ],
+                // 'label_attr' => [
+                //     'class' => 'd-none',
+                // ],
                 'choices' => [
                     'Administrateur' => 'ROLE_ADMIN',
                 ],

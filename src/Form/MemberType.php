@@ -93,55 +93,6 @@ class MemberType extends AbstractType
                     'class' => 'form-label mt-4'
                 ]
             ])
-            // ->add('plainPassword', RepeatedType::class, [
-            //     // instead of being set onto the object directly,
-            //     // this is read and encoded in the controller
-            //     'mapped' => false,
-            //     'label' => 'Mot de passe',
-            //     'required' => false,
-            //     'type' => PasswordType::class,
-            //     'invalid_message' => 'Les mots de passe doivent correspondre',
-            //     'first_name' => 'password',
-            //     'second_name' => 'confirm_password',
-            //     'attr' => [
-            //         'class' => 'password-field',
-            //         'autocomplete' => 'new-password'
-            //     ],
-            //     'first_options'  => [
-            //         'label' => 'Mot de passe',
-            //         'attr' => [
-            //             'placeholder'=>'votre mot de passe',
-            //             'class' => 'form-control',
-            //         ],
-            //         'row_attr' => [
-            //             'class' => 'form-group',
-            //         ],
-            //         'label_attr'=> [
-            //             'class' => 'form-label mt-4'
-            //         ]
-            //     ],
-            //     'second_options' => [
-            //         'label' => 'Confirmez votre mot de passe',
-            //         'attr' => [
-            //             'class' => 'form-control',
-            //             'placeholder'=>'confirmez votre mot de passe',
-            //         ],
-            //         'row_attr' => [
-            //             'class' => 'form-group',
-            //         ],
-            //         'label_attr'=> [
-            //             'class' => 'form-label mt-4'
-            //         ]
-            //     ],
-            //     'constraints' => [
-            //         new Length([
-            //             'min' => 6,
-            //             'minMessage' => 'Your password should be at least {{ limit }} characters',
-            //             // max length allowed by Symfony for security reasons
-            //             'max' => 4096,
-            //         ]),
-            //     ],
-            // ])
         ;
     }
 

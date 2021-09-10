@@ -2,7 +2,7 @@
 
 {% block file_widget %}
     {{ block('form_widget') }}
-    <div class="vehicle-picture-preview">Aucune photo sélectionnée</div>
+    <div class="vehicle-picture-preview">{{ photo_label|default('Aucune photo sélectionnée') }}</div>
     {% if image_url is not null %}
         <div class="d-flex flex-column">
             <img src="{{ uploaded_asset(image_url) }}" style="width: 300px" class="previous-vehicle-picture mt-4" name="vehicle-picture"/>
